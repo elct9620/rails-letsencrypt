@@ -3,6 +3,7 @@ require 'acme-client'
 require 'letsencrypt/engine'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
+require 'letsencrypt/redis'
 
 # :nodoc:
 module LetsEncrypt
