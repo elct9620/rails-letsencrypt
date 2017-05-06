@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails-letsencrypt (0.1.0)
+    rails-letsencrypt (0.2.0)
       acme-client
       rails (~> 5.1.0)
       redis
