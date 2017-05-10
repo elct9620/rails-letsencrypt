@@ -48,8 +48,8 @@ module LetsEncrypt
       true
     end
 
-    def retry_on_verify_error
-      @retries = 0
+    def retry_on_verify_error(e)
+      @retries ||= 0
       if e.is_a?(Acme::Client::Error::BadNonce) && @retries < 5
         @retries += 1
         # rubocop:disable Metrics/LineLength
