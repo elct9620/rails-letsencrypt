@@ -1,4 +1,4 @@
-class CreateLetsEncryptCertificates < ActiveRecord::Migration[5.1]
+class CreateLetsEncryptCertificates < ActiveRecord::Migration
   def change
     create_table :lets_encrypt_certificates do |t|
       t.string :domain

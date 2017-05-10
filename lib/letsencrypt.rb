@@ -1,5 +1,6 @@
 require 'openssl'
 require 'acme-client'
+require 'redis'
 require 'letsencrypt/engine'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'

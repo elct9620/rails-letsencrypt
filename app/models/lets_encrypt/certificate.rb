@@ -1,6 +1,6 @@
 module LetsEncrypt
   # :nodoc:
-  class Certificate < ApplicationRecord
+  class Certificate < ActiveRecord::Base
     include CertificateVerifiable
     include CertificateIssuable
 
