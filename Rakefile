@@ -14,8 +14,8 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-load 'rails/tasks/statistics.rake'
+# TODO: Add rails 5 support tasks => load 'rails/tasks/statistics.rake'
 
 require 'bundler/gem_tasks'
 
-task default: :stats
+task default: :install
