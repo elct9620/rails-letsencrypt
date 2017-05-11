@@ -8,14 +8,10 @@ require 'rdoc/task'
 
 RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'LetsEncrypt'
+  rdoc.title    = 'rails-letsencrypt'
   rdoc.options << '--line-numbers'
   rdoc.rdoc_files.include('README.md')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-# TODO: Add rails 5 support tasks => load 'rails/tasks/statistics.rake'
-
 require 'bundler/gem_tasks'
-
-task default: :install

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_dependency 'lets_encrypt/application_controller'
 
 module LetsEncrypt

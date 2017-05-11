@@ -1,6 +1,7 @@
 require 'openssl'
 require 'acme-client'
 require 'redis'
+require 'letsEncrypt/railtie'
 require 'letsencrypt/engine'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
@@ -59,6 +60,11 @@ module LetsEncrypt
 
     def config
       @config ||= Configuration.new
+    end
+
+    # @api private
+    def table_name_prefix
+      'letsencrypt_'
     end
   end
 end

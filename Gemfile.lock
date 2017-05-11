@@ -3,7 +3,7 @@ PATH
   specs:
     rails-letsencrypt (0.3.0)
       acme-client
-      rails (~> 4.0)
+      rails (>= 4.0)
       redis
 
 GEM
