@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Letsencrypt
+module LetsEncrypt
   # :nodoc:
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception

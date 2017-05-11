@@ -24,7 +24,7 @@ module LetsEncrypt
     end
 
     def get
-      verif && issue
+      verify && issue
     end
 
     alias renew get
