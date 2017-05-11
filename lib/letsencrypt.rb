@@ -31,7 +31,7 @@ module LetsEncrypt
     end
 
     def endpoint
-      @endpoint ||= Rails.env.production? ? ENDPOINT : ENDPOINT_STAGING
+      @endpoint ||= config.use_staging? ? ENDPOINT_STAGING : ENDPOINT
     end
 
     def register(email)
@@ -58,8 +58,10 @@ module LetsEncrypt
       @logger ||= LoggerProxy.new(Rails.logger, tags: ['LetsEncrypt'])
     end
 
-    def config
+    def config(&block)
       @config ||= Configuration.new
+      instance_exec(@config, &block) if block_given?
+      @config
     end
 
     # @api private
