@@ -11,10 +11,18 @@ gem 'rails-letsencrypt'
 ```
 
 Run install migrations
+
 ```bash
-rake letsencrypt:install:migrations
+rails generate lets_encrypt:install
 rake db:migrate
 ```
+
+Setup private key for Let's Encrypt API
+
+```bash
+rails generate lets_encrypt:register
+```
+
 
 Add `acme-challenge` mounts in `config/routes.rb`
 ```ruby
@@ -24,6 +32,22 @@ mount LetsEncrypt::Engine => '/.well-known'
 ## Usage
 
 The SSL certificate setup is depend on web server, this gem can work with `ngx_mruby` or `kong`.
+
+### Tasks
+
+To renew certificate, you can can run `renew` task to renew coming expires certificates.
+
+```bash
+rake letsencrypt:renew
+```
+
+### Jobs
+
+If you are using Sidekiq or others, you can enqueue renew task daily.
+
+```
+LetsEncrypt::RenewCertificate.queue(:default)
+```
 
 ### ngx_mruby
 
