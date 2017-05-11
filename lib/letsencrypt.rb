@@ -43,7 +43,6 @@ module LetsEncrypt
     end
 
     def private_key_path
-      # TODO: Add options for specify path
       config.private_key_path || Rails.root.join('config', 'letsencrypt.key')
     end
 

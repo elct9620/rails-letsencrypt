@@ -20,7 +20,7 @@ module LetsEncrypt
       save_to_redis == true
     end
 
-    def use_stagign?
+    def use_staging?
       use_staging
     end
   end
