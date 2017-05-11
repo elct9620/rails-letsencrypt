@@ -56,8 +56,10 @@ The setup is following this [Article](http://hb.matsumoto-r.jp/entry/2017/03/23/
 Add `config/initializers/letsencrypt.rb` to add config to sync certificate.
 
 ```ruby
-LetsEncrypt.config.redis_url = 'redis://localhost:6379/1'
-LetsEncrypt.config.save_to_redis = true
+LetsEncrypt.config do |config|
+  config.redis_url = 'redis://localhost:6379/1'
+  config.save_to_redis = true
+end
 ```
 
 Connect `Redis` when nginx worker start
