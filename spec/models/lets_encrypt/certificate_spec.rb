@@ -6,6 +6,10 @@ RSpec.describe LetsEncrypt::Certificate do
   let(:intermediaries) { Array.new(3).map { OpenSSL::X590::Certificate.new } }
   let(:ca) { OpenSSL::X509::Certificate.new }
 
+  before(:each) do
+    LetsEncrypt.config.save_to_redis = false
+  end
+
   describe '#active?' do
     it 'return true when certificate exists' do
       subject.certificate = ca
@@ -34,6 +38,48 @@ RSpec.describe LetsEncrypt::Certificate do
       LetsEncrypt.config.save_to_redis = true
       subject.domain = 'example.com'
       subject.save
+    end
+  end
+
+  describe '#verify' do
+    let(:acme_client) { double(::Acme::Client) }
+    let(:acme_authorization) { double }
+    let(:acme_challenge) { double }
+
+    before(:each) do
+      subject.domain = 'example.com'
+
+      allow(LetsEncrypt).to receive(:client).and_return(acme_client)
+      allow(acme_client).to receive(:authorize).and_return(acme_authorization)
+      allow(acme_authorization).to receive(:http01).and_return(acme_challenge)
+
+      # rubocop:disable Metrics/LineLength
+      expect(acme_challenge).to receive(:filename).and_return('.well-known/acme-challenge/path').at_least(1).times
+      expect(acme_challenge).to receive(:file_content).and_return('content').at_least(1).times
+
+      expect(acme_challenge).to receive(:request_verification).and_return(true).at_least(1).times
+      # rubocop:enable Metrics/LineLength
+    end
+
+    it 'ask for Let\'s Encrypt to verify domain' do
+      expect(acme_challenge)
+        .to receive(:verify_status).and_return('valid').at_least(1).times
+      subject.verify
+    end
+
+    it 'wait verify status is pending' do
+      expect(acme_challenge).to receive(:verify_status).and_return('pending')
+      expect(acme_challenge)
+        .to receive(:verify_status).and_return('valid').at_least(1).times
+      subject.verify
+    end
+
+    it 'retry when Acme::Client has error' do
+      expect(acme_challenge)
+        .to receive(:verify_status).and_raise(::Acme::Client::Error::BadNonce)
+      expect(acme_challenge)
+        .to receive(:verify_status).and_return('valid').at_least(1).times
+      subject.verify
     end
   end
 end
