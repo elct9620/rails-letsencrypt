@@ -3,7 +3,7 @@
 require 'openssl'
 require 'acme-client'
 require 'redis'
-require 'letsEncrypt/railtie'
+require 'letsencrypt/railtie'
 require 'letsencrypt/engine'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
