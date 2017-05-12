@@ -46,7 +46,7 @@ rake letsencrypt:renew
 If you are using Sidekiq or others, you can enqueue renew task daily.
 
 ```
-LetsEncrypt::RenewCertificate.queue(:default)
+LetsEncrypt::RenewCertificate.perform_later
 ```
 
 ### ngx_mruby

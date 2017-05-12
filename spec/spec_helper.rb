@@ -36,6 +36,8 @@ SimpleCov.start do
   add_group 'Models', 'app/models'
   add_group 'Jobs', 'app/jobs'
 
+  add_filter '/generators\/(.+)\/templates/'
+
   track_files '{app,lib}/**/*.rb'
 end
 
