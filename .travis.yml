@@ -7,6 +7,8 @@ gemfile:
   - gemfiles/rails_4.gemfile
   - gemfiles/rails_5.gemfile
 before_install:
-  - "rm -f Gemfile.lock"
-install: "bundle install --jobs=3 --retry=3"
-script: "bundle exec rspec"
+  - rm -f Gemfile.lock
+install: bundle install --jobs=3 --retry=3
+script:
+  - bundle exec rspec
+  - bundle exec codeclimate-test-reporter
