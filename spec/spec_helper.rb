@@ -21,10 +21,12 @@ require 'coveralls'
 require 'codeclimate-test-reporter'
 
 SimpleCov.start do
-  formatter SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
+  formatter SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::HTMLFormatter,
+      Coveralls::SimpleCov::Formatter
+    ]
+  )
 
   load_profile 'test_frameworks'
 

@@ -10,5 +10,6 @@ AllCops:
     - Appraisals
     - rails-letsencrypt.gemspec
     - lib/generators/lets_encrypt/templates/migration.rb
+    - spec/dummy/**/*
 Rails:
   Enabled: true
