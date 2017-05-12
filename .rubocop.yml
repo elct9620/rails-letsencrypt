@@ -13,3 +13,6 @@ AllCops:
     - spec/dummy/**/*
 Rails:
   Enabled: true
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*.rb

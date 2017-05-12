@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe LetsEncrypt::Certificate do
-  let(:intermediaries) { Array.new(3).map { OpenSSL::X590::Certificate.new } }
+  let(:intermediaries) { Array.new(3).map { OpenSSL::X509::Certificate.new } }
   let(:ca) { OpenSSL::X509::Certificate.new }
 
   before(:each) do
@@ -46,7 +46,7 @@ RSpec.describe LetsEncrypt::Certificate do
     let(:acme_authorization) { double }
     let(:acme_challenge) { double }
 
-    before(:each) do
+    before :each do
       subject.domain = 'example.com'
 
       allow(LetsEncrypt).to receive(:client).and_return(acme_client)
@@ -80,6 +80,27 @@ RSpec.describe LetsEncrypt::Certificate do
       expect(acme_challenge)
         .to receive(:verify_status).and_return('valid').at_least(1).times
       subject.verify
+    end
+  end
+
+  describe '#issue' do
+    let(:acme_client) { double(::Acme::Client) }
+    let(:acme_cert) { double }
+
+    before :each do
+      subject.domain = 'example.com'
+      subject.key = OpenSSL::PKey::RSA.new(2048)
+
+      allow(LetsEncrypt).to receive(:client).and_return(acme_client)
+      allow(acme_client).to receive(:new_certificate).and_return(acme_cert)
+      allow(ca).to receive(:not_after).and_return(1.month.from_now)
+    end
+
+    it 'create new signed certificate' do
+      expect(acme_cert).to receive(:to_pem).and_return(ca.to_s)
+      expect(acme_cert).to receive(:chain_to_pem).and_return(intermediaries.join)
+      expect(acme_cert).to receive(:x509).and_return(ca)
+      subject.issue
     end
   end
 end
