@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'openssl'
 require 'acme-client'
 require 'redis'
@@ -9,8 +11,8 @@ require 'letsencrypt/redis'
 
 # :nodoc:
 module LetsEncrypt
-  ENDPOINT = 'https://acme-v01.api.letsencrypt.org/'.freeze
-  ENDPOINT_STAGING = 'https://acme-staging.api.letsencrypt.org'.freeze
+  ENDPOINT = 'https://acme-v01.api.letsencrypt.org/'
+  ENDPOINT_STAGING = 'https://acme-staging.api.letsencrypt.org'
 
   class << self
     def client

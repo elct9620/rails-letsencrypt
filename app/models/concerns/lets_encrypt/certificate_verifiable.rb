@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LetsEncrypt
   # :nodoc:
   module CertificateVerifiable
@@ -52,9 +54,7 @@ module LetsEncrypt
       @retries ||= 0
       if e.is_a?(Acme::Client::Error::BadNonce) && @retries < 5
         @retries += 1
-        # rubocop:disable Metrics/LineLength
         logger.info "Bad nounce encountered. Retrying (#{@retries} of 5 attempts)"
-        # rubocop:enable Metrics/LineLength
         sleep 1
         verify
       else
