@@ -1,5 +1,5 @@
 PATH
-  remote: .
+  remote: ..
   specs:
     rails-letsencrypt (0.4.0)
       acme-client
@@ -141,6 +141,7 @@ PLATFORMS
 
 DEPENDENCIES
   appraisal
+  rails (= 5.1.0)
   rails-letsencrypt!
   rspec-rails
 
