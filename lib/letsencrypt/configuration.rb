@@ -16,10 +16,12 @@ module LetsEncrypt
     config_accessor :save_to_redis
     config_accessor :redis_url
 
+    # Returns true if enabled `save_to_redis` feature
     def use_redis?
       save_to_redis == true
     end
 
+    # Returns true if under development mode.
     def use_staging?
       use_staging
     end

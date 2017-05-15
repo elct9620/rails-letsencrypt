@@ -8,6 +8,7 @@ module LetsEncrypt
         @connection ||= ::Redis.new(url: LetsEncrypt.config.redis_url)
       end
 
+      # Save certificate into redis.
       def save(cert)
         LetsEncrypt.logger.info "Save #{cert.domain}'s certificate to redis"
         connection.set "#{cert.domain}.key", cert.key

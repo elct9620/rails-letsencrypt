@@ -8,4 +8,5 @@ spec/dummy/tmp/
 spec/dummy/config/letsencrypt.key
 
 coverage/
-
+.yardoc/
+doc/

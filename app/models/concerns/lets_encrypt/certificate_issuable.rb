@@ -5,6 +5,7 @@ module LetsEncrypt
   module CertificateIssuable
     extend ActiveSupport::Concern
 
+    # Returns true if issue new certificate succeed.
     def issue
       logger.info "Getting certificate for #{domain}"
       create_certificate

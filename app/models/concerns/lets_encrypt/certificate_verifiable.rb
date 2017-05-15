@@ -5,6 +5,7 @@ module LetsEncrypt
   module CertificateVerifiable
     extend ActiveSupport::Concern
 
+    # Returns true if verify domain is succeed.
     def verify
       start_authorize
       start_challenge
