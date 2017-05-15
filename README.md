@@ -29,13 +29,95 @@ Add `acme-challenge` mounts in `config/routes.rb`
 mount LetsEncrypt::Engine => '/.well-known'
 ```
 
+### Configuration
+
+Add a file to `config/initializers/letsencrypt.rb` and put below config you need.
+
+```ruby
+LetsEncrypt.config do |config|
+  # Using Let's Encrypt staging server or not
+  # Default only `Rails.env.production? == true` will use Let's Encrypt production server.
+  config.use_staging = true
+
+  # Set the private key path
+  # Default is locate at config/letsencrypt.key
+  config.private_key_path = Rails.root.join('config', 'letsencrypt.key')
+
+  # Use environment variable to set private key
+  # If enable, the API Client will use `LETSENCRYPT_PRIVATE_KEY` as private key
+  # Default is false
+  config.use_env_key = false
+
+  # Should sync certificate into redis
+  # When using ngx_mruby to dynamic load certificate, this will be helpful
+  # Default is false
+  config.save_to_redis = false
+
+  # The redis server url
+  # Default is nil
+  config.redis_url = 'redis://localhost:6379/1'
+end
+```
+
 ## Usage
 
-The SSL certificate setup is depend on web server, this gem can work with `ngx_mruby` or `kong`.
+The SSL certificate setup depends on the web server, this gem can work with `ngx_mruby` or `kong`.
+
+### Certificate Model
+
+#### Create
+
+Add a new domain into the database.
+
+```ruby
+cert = LetsEncrypt::Certificate.create(domain: 'example.com')
+cert.get # alias  `verify && issue`
+```
+
+#### Verify
+
+Makes a request to Let's Encrypt and verify domain
+
+```ruby
+cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+cert.verify
+```
+
+#### Issue
+
+Ask Let's Encrypt to issue a new certificate.
+
+```ruby
+cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+cert.issue
+```
+
+#### Renew
+
+```ruby
+cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+cert.renew
+```
+
+#### Status
+
+Check a certificate is verified and issued.
+
+```ruby
+cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+cert.active? # => true
+```
+
+Check a certificate is expired.
+
+```ruby
+cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+cert.expired? # => false
+```
 
 ### Tasks
 
-To renew certificate, you can can run `renew` task to renew coming expires certificates.
+To renew a certificate, you can run `renew` task to renew coming expires certificates.
 
 ```bash
 rake letsencrypt:renew
@@ -46,7 +128,7 @@ rake letsencrypt:renew
 If you are using Sidekiq or others, you can enqueue renew task daily.
 
 ```
-LetsEncrypt::RenewCertificate.perform_later
+LetsEncrypt::RenewCertificatesJob.perform_later
 ```
 
 ### ngx_mruby
@@ -62,7 +144,7 @@ LetsEncrypt.config do |config|
 end
 ```
 
-Connect `Redis` when nginx worker start
+Connect `Redis` when Nginx worker start
 ```
 http {
   # ...
@@ -101,7 +183,7 @@ server {
 
 ### Kong
 
-Not support now.
+Coming soon.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
