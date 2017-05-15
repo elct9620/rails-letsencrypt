@@ -1,7 +1,27 @@
 # frozen_string_literal: true
 
 module LetsEncrypt
-  # :nodoc:
+  # == Schema Information
+  #
+  # Table name: letsencrypt_certificates
+  #
+  #  id                  :integer          not null, primary key
+  #  domain              :string(255)
+  #  certificate         :text(65535)
+  #  intermediaries      :text(65535)
+  #  key                 :text(65535)
+  #  expires_at          :datetime
+  #  renew_after         :datetime
+  #  verification_path   :string(255)
+  #  verification_string :string(255)
+  #  created_at          :datetime         not null
+  #  updated_at          :datetime         not null
+  #
+  # Indexes
+  #
+  #  index_letsencrypt_certificates_on_domain       (domain)
+  #  index_letsencrypt_certificates_on_renew_after  (renew_after)
+  #
   class Certificate < ActiveRecord::Base
     include CertificateVerifiable
     include CertificateIssuable
