@@ -32,7 +32,7 @@ module LetsEncrypt
         key_path = LetsEncrypt.private_key_path if key_path.blank?
 
         return unless file_collision(key_path)
-        FileUtils.rm(key_path)
+        FileUtils.rm(key_path) if File.exist?(key_path)
         LetsEncrypt.config.use_env_key = false
         LetsEncrypt.config.private_key_path = key_path
 
