@@ -57,7 +57,7 @@ module LetsEncrypt
 
     # Returns full-chain bundled certificates
     def bundle
-      [intermediaries, certificate].join("\n")
+      certificate + intermediaries
     end
 
     def certificate_object
