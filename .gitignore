@@ -10,3 +10,5 @@ spec/dummy/config/letsencrypt.key
 coverage/
 .yardoc/
 doc/
+
+Gemfile.lock
