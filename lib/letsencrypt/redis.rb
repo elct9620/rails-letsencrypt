@@ -10,6 +10,7 @@ module LetsEncrypt
 
       # Save certificate into redis.
       def save(cert)
+        return unless cert.key.present? && cert.certificate.present?
         LetsEncrypt.logger.info "Save #{cert.domain}'s certificate to redis"
         connection.set "#{cert.domain}.key", cert.key
         connection.set "#{cert.domain}.crt", cert.certificate

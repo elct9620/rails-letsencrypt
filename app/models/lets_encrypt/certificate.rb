@@ -33,7 +33,7 @@ module LetsEncrypt
     scope :expired, -> { where('expires_at <= ?', Time.zone.now) }
 
     before_create -> { self.key = OpenSSL::PKey::RSA.new(4096).to_s }
-    after_save -> { save_to_redis }, if: -> { LetsEncrypt.config.use_redis? }
+    after_save -> { save_to_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
 
     # Returns false if certificate is not issued.
     #

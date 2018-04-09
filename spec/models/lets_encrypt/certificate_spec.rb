@@ -33,10 +33,19 @@ RSpec.describe LetsEncrypt::Certificate do
   end
 
   describe '#save_to_redis' do
-    it 'save certificate into redis' do
+    it 'doesnt save certificate if it is blank' do
+      expect(LetsEncrypt::Redis).to_not receive(:save)
+      LetsEncrypt.config.save_to_redis = true
+      subject.domain = 'example.com'
+      subject.save
+    end
+
+    it 'saves certificate into redis' do
       expect(LetsEncrypt::Redis).to receive(:save)
       LetsEncrypt.config.save_to_redis = true
       subject.domain = 'example.com'
+      subject.certificate = 'CERTIFICATE'
+      subject.key = 'KEY'
       subject.save
     end
   end
