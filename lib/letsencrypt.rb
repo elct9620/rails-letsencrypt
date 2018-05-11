@@ -21,10 +21,9 @@ module LetsEncrypt
   class << self
     # Create the ACME Client to Let's Encrypt
     def client
-      @endpoint ||= config.use_staging? ? ENDPOINT_STAGING : ENDPOINT
       @client ||= ::Acme::Client.new(
         private_key: private_key,
-        endpoint: @endpoint
+        endpoint: endpoint
       )
     end
 
