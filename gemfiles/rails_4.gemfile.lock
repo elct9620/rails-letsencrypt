@@ -1,15 +1,15 @@
 PATH
   remote: ..
   specs:
-    rails-letsencrypt (0.5.4)
-      acme-client
+    rails-letsencrypt (0.5.5)
+      acme-client (~> 1.0)
       rails (>= 4.1)
       redis
 
 GEM
   remote: https://rubygems.org/
   specs:
-    acme-client (0.6.2)
+    acme-client (1.0.0)
       faraday (~> 0.9, >= 0.9.1)
     actionmailer (4.2.8)
       actionpack (= 4.2.8)
@@ -63,7 +63,7 @@ GEM
     diff-lcs (1.3)
     docile (1.1.5)
     erubis (2.7.0)
-    faraday (0.14.0)
+    faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
