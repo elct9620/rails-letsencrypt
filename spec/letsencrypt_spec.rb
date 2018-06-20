@@ -24,15 +24,15 @@ RSpec.describe LetsEncrypt do
 
   describe '#register' do
     let(:acme_client) { double(::Acme::Client) }
-    let(:acme_registration) { double }
+    let(:acme_account) { double }
 
     it 'register new account to Let\'s Encrypt' do
       tempfile.write(key.to_s)
       tempfile.rewind
 
       allow(LetsEncrypt).to receive(:client).and_return(acme_client)
-      allow(acme_client).to receive(:register).and_return(acme_registration)
-      expect(acme_registration).to receive(:agree_terms)
+      allow(acme_client).to receive(:new_account).and_return(acme_account)
+      allow(acme_account).to receive(:kid).and_return('')
 
       LetsEncrypt.register('example@example.com')
     end
