@@ -27,9 +27,9 @@ module LetsEncrypt
     end
 
     def create_certificate
-      @order.finalize(csr: csr)
-      sleep 1 while @order.status == 'processing'
-      cert = OpenSSL::X509::Certificate.new(@order.certificate)
+      order.finalize(csr: csr)
+      sleep 1 while order.status == 'processing'
+      cert = OpenSSL::X509::Certificate.new(order.certificate)
       self.certificate = cert.to_pem
       # TODO: Provide fullchain support
       # self.intermediaries = https_cert.chain_to_pem

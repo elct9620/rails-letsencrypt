@@ -19,8 +19,7 @@ module LetsEncrypt
 
     def create_order
       # TODO: Support multiple domain
-      @order = LetsEncrypt.client.new_order(identifiers: [domain])
-      @challenge = @order.authorizations.first.http
+      @challenge = order.authorizations.first.http
       self.verification_path = @challenge.filename
       self.verification_string = @challenge.file_content
       save!
