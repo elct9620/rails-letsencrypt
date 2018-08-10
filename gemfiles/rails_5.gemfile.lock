@@ -1,15 +1,15 @@
 PATH
   remote: ..
   specs:
-    rails-letsencrypt (0.5.5)
-      acme-client (~> 1.0)
+    rails-letsencrypt (0.6.0)
+      acme-client (~> 2.0.0)
       rails (>= 4.1)
       redis
 
 GEM
   remote: https://rubygems.org/
   specs:
-    acme-client (1.0.0)
+    acme-client (2.0.0)
       faraday (~> 0.9, >= 0.9.1)
     actioncable (5.1.0)
       actionpack (= 5.1.0)

@@ -7,7 +7,7 @@ module LetsEncrypt
 
     # Returns true if verify domain is succeed.
     def verify
-      start_authorize
+      create_order
       start_challenge
       wait_verify_status
       check_verify_status
@@ -17,9 +17,9 @@ module LetsEncrypt
 
     private
 
-    def start_authorize
-      authorization = LetsEncrypt.client.authorize(domain: domain)
-      @challenge = authorization.http01
+    def create_order
+      # TODO: Support multiple domain
+      @challenge = order.authorizations.first.http
       self.verification_path = @challenge.filename
       self.verification_string = @challenge.file_content
       save!
@@ -27,24 +27,25 @@ module LetsEncrypt
 
     def start_challenge
       logger.info "Attempting verification of #{domain}"
-      @challenge.request_verification
+      @challenge.request_validation
     end
 
     def wait_verify_status
       checks = 0
-      until @challenge.verify_status != 'pending'
+      until @challenge.status != 'pending'
         checks += 1
         if checks > 30
           logger.info 'Status remained at pending for 30 checks'
           return false
         end
         sleep 1
+        @challenge.reload
       end
     end
 
     def check_verify_status
-      unless @challenge.verify_status == 'valid'
-        logger.info "Status was not valid (was: #{@challenge.verify_status})"
+      unless @challenge.status == 'valid'
+        logger.info "Status was not valid (was: #{@challenge.status})"
         return false
       end
 
