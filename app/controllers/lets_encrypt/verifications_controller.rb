@@ -17,7 +17,7 @@ module LetsEncrypt
     end
 
     def certificate
-      LetsEncrypt::Certificate.find_by(verification_path: filename)
+      LetsEncrypt.config.certificate_model.constantize.find_by(verification_path: filename)
     end
 
     def filename
