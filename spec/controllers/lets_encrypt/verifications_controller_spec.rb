@@ -4,15 +4,22 @@ require 'rails_helper'
 
 RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
   routes { LetsEncrypt::Engine.routes }
+  class OtherModel < LetsEncrypt::Certificate
+  end
+  before(:each) do
+    LetsEncrypt.config.certificate_model = 'OtherModel'
+  end
 
-  it 'returns 404 status when no valid verification path found' do
-    open(:get, :show, verification_path: :invalid_path)
-    expect(response.status).to eq(404)
+  context 'has certificate' do
+    it 'returns 404 status when no valid verification path found' do
+      open(:get, :show, verification_path: :invalid_path)
+      expect(response.status).to eq(404)
+    end
   end
 
   context 'has certificate' do
     let!(:certificate) do
-      LetsEncrypt::Certificate.create(
+      LetsEncrypt.config.certificate_model.constantize.create(
         domain: 'example.com',
         verification_path: '.well-known/acme-challenge/valid_path',
         verification_string: 'verification'
