@@ -14,14 +14,14 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
 
 
   describe 'has certificate' do
-   let!(:certificate) do
-      LetsEncrypt.certificate_model.create(
-        domain: 'example.com',
-        verification_path: '.well-known/acme-challenge/valid_path',
-        verification_string: 'verification'
-      )
-    end
     context 'with default model' do
+      let!(:certificate) do
+        LetsEncrypt.certificate_model.create(
+          domain: 'example.com',
+          verification_path: '.well-known/acme-challenge/valid_path',
+          verification_string: 'verification'
+        )
+      end
       it 'returns verification string when found verification path' do
         open(:get, :show, verification_path: 'valid_path')
         expect(response.status).to eq(200)
@@ -31,6 +31,13 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
 
     context 'with customize model' do
       before { LetsEncrypt.config.certificate_model = 'OtherModel' }
+      let!(:certificate) do
+        LetsEncrypt.certificate_model.create(
+          domain: 'example.com',
+          verification_path: '.well-known/acme-challenge/valid_path',
+          verification_string: 'verification'
+        )
+      end
       after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
       it 'returns verification string when found verification path' do
         open(:get, :show, verification_path: 'valid_path')
