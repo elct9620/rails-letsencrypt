@@ -30,11 +30,8 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
     end
 
     context 'with customize model' do
-      LetsEncrypt.config.certificate_model = 'OtherModel'
-      it 'set the certificate_model to customize model' do
-        expect(LetsEncrypt.certificate_model).to eq('OtherModel'.constantize)
-      end
-
+      before { LetsEncrypt.config.certificate_model = 'OtherModel' }
+      after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
       it 'returns verification string when found verification path' do
         open(:get, :show, verification_path: 'valid_path')
         expect(response.status).to eq(200)
