@@ -41,10 +41,13 @@ RSpec.describe LetsEncrypt do
   describe 'certificate_model' do
     class OtherModel < LetsEncrypt::Certificate
     end
-    before { LetsEncrypt.config.certificate_model = 'OtherModel' }
+    before do
+      LetsEncrypt.config.certificate_model = 'OtherModel'
+      LetsEncrypt.stub(:certificate_model) { LetsEncrypt.config.certificate_model.constantize }
+    end
     after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
     it 'set the certificate_model to customize model' do
-        expect(LetsEncrypt.certificate_model).to eq('OtherModel'.constantize)
+      expect(LetsEncrypt.certificate_model).to eq('OtherModel'.constantize)
     end
   end
 end

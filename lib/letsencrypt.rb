@@ -88,7 +88,7 @@ module LetsEncrypt
     end
 
     def certificate_model
-      config.certificate_model.constantize
+      @certificate_model ||= config.certificate_model.constantize
     end
   end
 end

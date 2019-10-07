@@ -28,13 +28,14 @@ RSpec.describe LetsEncrypt::Configuration do
 
     before(:each) do
       LetsEncrypt.config.certificate_model = 'OtherModel'
+      LetsEncrypt.stub(:certificate_model) { 'OtherModel'.constantize }
       LetsEncrypt.certificate_model.create(
         domain: 'example.com',
         verification_path: '.well-known/acme-challenge/valid_path',
         verification_string: 'verification'
       )
     end
-
+    after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
     it 'update data' do
       expect_any_instance_of(OtherModel).to receive(:success)
       LetsEncrypt.certificate_model.first.update(renew_after: 3.days.ago)
