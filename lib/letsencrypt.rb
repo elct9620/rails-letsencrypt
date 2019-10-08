@@ -86,5 +86,9 @@ module LetsEncrypt
     def table_name_prefix
       'letsencrypt_'
     end
+
+    def certificate_model
+      @certificate_model ||= config.certificate_model.constantize
+    end
   end
 end

@@ -16,6 +16,10 @@ module LetsEncrypt
     config_accessor :save_to_redis
     config_accessor :redis_url
 
+    config_accessor :certificate_model do
+      'LetsEncrypt::Certificate'
+    end
+
     # Returns true if enabled `save_to_redis` feature
     def use_redis?
       save_to_redis == true
