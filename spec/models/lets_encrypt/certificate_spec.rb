@@ -50,6 +50,27 @@ RSpec.describe LetsEncrypt::Certificate do
     end
   end
 
+  describe '#delete_from_redis' do
+    it 'doesnt delete certificate if it is blank' do
+      expect(LetsEncrypt::Redis).to_not receive(:delete)
+      LetsEncrypt.config.save_to_redis = true
+      subject.domain = 'example.com'
+      subject.save
+      subject.destroy
+    end
+
+    it 'deletes certificate from redis' do
+      expect(LetsEncrypt::Redis).to receive(:save)
+      expect(LetsEncrypt::Redis).to receive(:delete)
+      LetsEncrypt.config.save_to_redis = true
+      subject.domain = 'example.com'
+      subject.certificate = 'CERTIFICATE'
+      subject.key = 'KEY'
+      subject.save
+      subject.destroy
+    end
+  end
+
   describe '#verify' do
     let(:acme_client) { double(::Acme::Client) }
     let(:acme_order) { double }
