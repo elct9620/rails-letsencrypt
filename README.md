@@ -2,6 +2,11 @@
 
 Provide manageable Let's Encrypt Certificate for Rails.
 
+## Requirement
+
+* Rails 5+
+* Ruby 2.5+
+
 ## Installation
 
 Puts this in your Gemfile:

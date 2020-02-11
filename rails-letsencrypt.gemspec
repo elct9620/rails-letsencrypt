@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "appraisal"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "simplecov", "~> 0.18.1"
-  s.add_development_dependency "coveralls"
+  s.add_development_dependency "simplecov", "~> 0.16.1"
+  s.add_development_dependency "coveralls", "~> 0.8.23"
   s.add_development_dependency "codeclimate-test-reporter"
 end
