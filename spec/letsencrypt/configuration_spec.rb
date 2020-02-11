@@ -28,7 +28,7 @@ RSpec.describe LetsEncrypt::Configuration do
 
     before(:each) do
       LetsEncrypt.config.certificate_model = 'OtherModel'
-      LetsEncrypt.stub(:certificate_model) { 'OtherModel'.constantize }
+      allow(LetsEncrypt).to receive(:certificate_model).and_return(OtherModel)
       LetsEncrypt.certificate_model.create(
         domain: 'example.com',
         verification_path: '.well-known/acme-challenge/valid_path',

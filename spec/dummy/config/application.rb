@@ -2,36 +2,27 @@
 
 require 'rails/version'
 
-if Rails::VERSION::MAJOR == 5
-  require_relative 'boot'
+require_relative 'boot'
 
-  require 'rails/all'
+require 'rails/all'
 
-  Bundler.require(*Rails.groups)
-  require 'rails-letsencrypt'
+Bundler.require(*Rails.groups)
+require 'rails-letsencrypt'
 
-  module Dummy
-    class Application < Rails::Application
+module Dummy
+  class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    case Rails::VERSION::MAJOR
+    when 6
+      config.load_defaults 6.0
+    when 5
       config.load_defaults 5.1
+      config.active_record.sqlite3.represent_boolean_as_integer = true
     end
-  end
 
-else
-  require File.expand_path('../boot', __FILE__)
-
-  # Pick the frameworks you want:
-  require 'active_record/railtie'
-  require 'action_controller/railtie'
-  require 'action_mailer/railtie'
-  require 'action_view/railtie'
-  require 'sprockets/railtie'
-
-  Bundler.require(*Rails.groups)
-  require 'rails-letsencrypt'
-
-  module Dummy
-    class Application < Rails::Application
-      config.active_record.raise_in_transactional_callbacks = true
-    end
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
   end
 end

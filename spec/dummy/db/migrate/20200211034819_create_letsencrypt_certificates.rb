@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-superclass = ActiveRecord::Migration
-superclass = ActiveRecord::Migration[5.0] if superclass.respond_to?(:[])
 # :nodoc:
-class CreateLetsencryptCertificates < ActiveRecord::Migration[5.1]
+class CreateLetsencryptCertificates < ActiveRecord::Migration[5.2]
   def change
     create_table :letsencrypt_certificates do |t|
       t.string   :domain
