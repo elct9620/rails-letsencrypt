@@ -5,7 +5,7 @@ namespace :letsencrypt do
   task renew: :environment do
     count = 0
     failed = 0
-    LetsEncrypt.certificate_model.renewable do |certificate|
+    LetsEncrypt.certificate_model.renewable.each do |certificate|
       count += 1
       next if certificate.renew
       failed += 1
