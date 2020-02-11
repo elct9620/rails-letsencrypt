@@ -19,13 +19,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.require_paths = ["lib"]
 
-  s.add_dependency "rails", ">= 4.1"
+  s.add_dependency "rails", ">= 5.0"
   s.add_dependency "acme-client", "~> 2.0.0"
   s.add_dependency "redis"
 
   s.add_development_dependency "appraisal"
   s.add_development_dependency "rspec-rails"
-  s.add_development_dependency "simplecov"
+  s.add_development_dependency "simplecov", "~> 0.18.1"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "codeclimate-test-reporter"
 end

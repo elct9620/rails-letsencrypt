@@ -8,7 +8,7 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
   end
 
   it 'returns 404 status when no valid verification path found' do
-    open(:get, :show, verification_path: :invalid_path)
+    get :show, params: { verification_path: :invalid_path }
     expect(response.status).to eq(404)
   end
 
@@ -23,7 +23,7 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
         )
       end
       it 'returns verification string when found verification path' do
-        open(:get, :show, verification_path: 'valid_path')
+        get :show, params: { verification_path: 'valid_path' }
         expect(response.status).to eq(200)
         expect(response.body).to eq(certificate.verification_string)
       end
@@ -40,7 +40,7 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
       end
       after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
       it 'returns verification string when found verification path' do
-        open(:get, :show, verification_path: 'valid_path')
+        get :show, params: { verification_path: 'valid_path' }
         expect(response.status).to eq(200)
         expect(response.body).to eq(certificate.verification_string)
       end

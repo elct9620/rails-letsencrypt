@@ -43,7 +43,7 @@ RSpec.describe LetsEncrypt do
     end
     before do
       LetsEncrypt.config.certificate_model = 'OtherModel'
-      LetsEncrypt.stub(:certificate_model) { LetsEncrypt.config.certificate_model.constantize }
+      allow(LetsEncrypt).to receive(:certificate_model) { LetsEncrypt.config.certificate_model.constantize }
     end
     after { LetsEncrypt.config.certificate_model = 'LetsEncrypt::Certificate' }
     it 'set the certificate_model to customize model' do
