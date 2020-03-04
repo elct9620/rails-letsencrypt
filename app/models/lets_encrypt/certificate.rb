@@ -34,6 +34,7 @@ module LetsEncrypt
 
     before_create -> { self.key = OpenSSL::PKey::RSA.new(4096).to_s }
     after_save -> { save_to_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
+    after_destroy -> { delete_from_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
 
     # Returns false if certificate is not issued.
     #
@@ -71,6 +72,11 @@ module LetsEncrypt
     # Save certificate into redis
     def save_to_redis
       LetsEncrypt::Redis.save(self)
+    end
+
+    # Delete certificate from redis
+    def delete_from_redis
+      LetsEncrypt::Redis.delete(self)
     end
 
     protected
