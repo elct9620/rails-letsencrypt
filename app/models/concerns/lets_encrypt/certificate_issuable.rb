@@ -10,7 +10,7 @@ module LetsEncrypt
       logger.info "Getting certificate for #{domain}"
       create_certificate
       # rubocop:disable Metrics/LineLength
-      logger.info "Certificate issued (expires on #{expires_at}, will renew after #{renew_after})"
+      logger.info "Certificate issued for #{domain} (expires on #{expires_at}, will renew after #{renew_after})"
       # rubocop:enable Metrics/LineLength
       true
     end
