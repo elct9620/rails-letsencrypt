@@ -21,12 +21,12 @@ module LetsEncrypt
                            'db/migrate/create_letsencrypt_certificates.rb'
       end
 
-      def rails5?
-        Rails::VERSION::MAJOR == 5
+      def required_migration_version?
+        Rails::VERSION::MAJOR >= 5
       end
 
       def migration_version
-        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if rails5?
+        "[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]" if required_migration_version?
       end
     end
   end
