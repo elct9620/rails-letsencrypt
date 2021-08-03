@@ -72,6 +72,13 @@ end
 
 The SSL certificate setup depends on the web server, this gem can work with `ngx_mruby` or `kong`.
 
+### Let's Encrypt Account
+
+```ruby
+account = LetsEncrypt.client.new_account(contact: 'mailto:myname@mydomain.com', terms_of_service_agreed: true)
+kid = account.kid
+```
+
 ### Certificate Model
 
 #### Create
