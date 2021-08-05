@@ -22,7 +22,7 @@ rails generate lets_encrypt:install
 rake db:migrate
 ```
 
-Setup private key for Let's Encrypt API
+Setup private key for Let's Encrypt API, and create an account at letsencrypt.org associated with that key
 
 ```bash
 rails generate lets_encrypt:register
