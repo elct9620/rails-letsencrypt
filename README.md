@@ -22,7 +22,7 @@ rails generate lets_encrypt:install
 rake db:migrate
 ```
 
-Setup private key for Let's Encrypt API
+Setup private key for Let's Encrypt API, and create an account at letsencrypt.org associated with that key
 
 ```bash
 rails generate lets_encrypt:register
@@ -71,13 +71,6 @@ end
 ## Usage
 
 The SSL certificate setup depends on the web server, this gem can work with `ngx_mruby` or `kong`.
-
-### Let's Encrypt Account
-
-```ruby
-account = LetsEncrypt.client.new_account(contact: 'mailto:myname@mydomain.com', terms_of_service_agreed: true)
-kid = account.kid
-```
 
 ### Certificate Model
 
