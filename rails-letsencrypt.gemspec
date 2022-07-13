@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", ">= 5.0"
   s.add_dependency "acme-client", "~> 2.0.0"
   s.add_dependency "redis"
+  s.add_dependency "net-smtp"
 
   s.add_development_dependency "appraisal"
   s.add_development_dependency "rspec-rails"
