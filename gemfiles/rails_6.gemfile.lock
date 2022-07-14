@@ -3,14 +3,13 @@ PATH
   specs:
     rails-letsencrypt (0.10.1)
       acme-client (~> 2.0.0)
-      actionmailer (>= 5.0, < 7)
-      actionpack (>= 5.0, < 7)
-      actionview (>= 5.0, < 7)
-      activemodel (>= 5.0, < 7)
-      activerecord (>= 5.0, < 7)
-      activesupport (>= 5.0, < 7)
-      net-smtp
-      railties (>= 5.0, < 7)
+      actionmailer (>= 5.0)
+      actionpack (>= 5.0)
+      actionview (>= 5.0)
+      activemodel (>= 5.0)
+      activerecord (>= 5.0)
+      activesupport (>= 5.0)
+      railties (>= 5.0)
       redis
 
 GEM
@@ -69,7 +68,6 @@ GEM
       tins (~> 1.6)
     crass (1.0.6)
     diff-lcs (1.5.0)
-    digest (3.1.0)
     docile (1.4.0)
     erubi (1.10.0)
     faraday (2.3.0)
@@ -91,12 +89,6 @@ GEM
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.16.2)
-    net-protocol (0.1.3)
-      timeout
-    net-smtp (0.3.1)
-      digest
-      net-protocol
-      timeout
     nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -145,7 +137,6 @@ GEM
     term-ansicolor (1.7.1)
       tins (~> 1.0)
     thor (1.2.1)
-    timeout (0.3.0)
     tins (1.31.1)
       sync
     tzinfo (2.0.4)
@@ -156,20 +147,20 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionmailer (~> 6.1)
-  actionpack (~> 6.1)
-  actionview (~> 6.1)
-  activemodel (~> 6.1)
-  activerecord (~> 6.1)
-  activesupport (~> 6.1)
+  actionmailer (~> 6)
+  actionpack (~> 6)
+  actionview (~> 6)
+  activemodel (~> 6)
+  activerecord (~> 6)
+  activesupport (~> 6)
   appraisal
   codeclimate-test-reporter
   coveralls (~> 0.8.23)
   rails-letsencrypt!
-  railties (~> 6.1)
+  railties (~> 6)
   rspec-rails
   simplecov (~> 0.16.1)
   sqlite3
 
 BUNDLED WITH
-   1.17.3
+   2.3.4
