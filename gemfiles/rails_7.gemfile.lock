@@ -90,6 +90,7 @@ GEM
       mini_mime (>= 0.1.1)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.0)
     minitest (5.16.2)
     net-imap (0.2.3)
       digest
@@ -105,7 +106,12 @@ GEM
       digest
       net-protocol
       timeout
+    nokogiri (1.13.7)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.13.7-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.7-x86_64-linux)
       racc (~> 1.4)
     racc (1.6.0)
     rack (2.2.4)
@@ -162,6 +168,7 @@ GEM
     zeitwerk (2.6.0)
 
 PLATFORMS
+  arm64-darwin-21
   ruby
   x86_64-linux
 
