@@ -145,6 +145,7 @@ GEM
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   actionmailer (~> 6)
@@ -163,4 +164,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.3.4
+   2.3.11
