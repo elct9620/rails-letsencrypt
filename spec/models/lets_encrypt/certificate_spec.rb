@@ -4,10 +4,14 @@ require 'rails_helper'
 
 RSpec.describe LetsEncrypt::Certificate do
   let(:intermediaries) { Array.new(3).map { OpenSSL::X509::Certificate.new } }
+  let(:key) { OpenSSL::PKey::RSA.new(4096) }
   let(:ca) { OpenSSL::X509::Certificate.new }
 
-  before(:each) do
+  before do
     LetsEncrypt.config.save_to_redis = false
+
+    ca.public_key = key.public_key
+    ca.sign(key, OpenSSL::Digest::SHA256.new)
   end
 
   describe '#active?' do
