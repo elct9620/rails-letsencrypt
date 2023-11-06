@@ -1,4 +1,4 @@
-# LetsEncrypt [![Gem Version](https://badge.fury.io/rb/rails-letsencrypt.svg)](https://badge.fury.io/rb/rails-letsencrypt) [![Build Status](https://travis-ci.org/elct9620/rails-letsencrypt.svg?branch=master)](https://travis-ci.org/elct9620/rails-letsencrypt) [![Coverage Status](https://coveralls.io/repos/github/elct9620/rails-letsencrypt/badge.svg?branch=master)](https://coveralls.io/github/elct9620/rails-letsencrypt?branch=master) [![Code Climate](https://codeclimate.com/github/elct9620/rails-letsencrypt/badges/gpa.svg)](https://codeclimate.com/github/elct9620/rails-letsencrypt)
+# LetsEncrypt [![Gem Version](https://badge.fury.io/rb/rails-letsencrypt.svg)](https://badge.fury.io/rb/rails-letsencrypt) [![Code Climate](https://codeclimate.com/github/elct9620/rails-letsencrypt/badges/gpa.svg)](https://codeclimate.com/github/elct9620/rails-letsencrypt)
 
 Provide manageable Let's Encrypt Certificate for Rails.
 
