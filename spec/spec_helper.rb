@@ -17,7 +17,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'simplecov'
-require 'codeclimate-test-reporter'
 
 SimpleCov.start do
   formatter SimpleCov::Formatter::MultiFormatter.new(
