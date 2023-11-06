@@ -3,7 +3,8 @@ cache: bundler
 dist: trusty
 rvm:
   - 2.6.0
-  - 2.7.0
+  - 2.7.7
+  - 3.2.2
 before_install:
   - gem install bundler -v 2.3.11
 gemfile:
