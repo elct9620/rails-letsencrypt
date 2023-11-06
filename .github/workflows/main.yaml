@@ -22,6 +22,9 @@ jobs:
           - rails_5
           - rails_6
           - rails_7
+        exclude:
+          - ruby: '2.6'
+            gemfile: rails_7
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
     steps:
