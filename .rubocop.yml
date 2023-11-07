@@ -10,6 +10,7 @@ AllCops:
     - gemfiles/*
     - spec/dummy/**/*
     - lib/generators/lets_encrypt/templates/*
+    - vendor/**/*
 
 Rails:
   Enabled: true
