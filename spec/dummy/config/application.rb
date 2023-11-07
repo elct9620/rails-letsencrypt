@@ -13,11 +13,10 @@ module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     case Rails::VERSION::MAJOR
+    when 7
+      config.load_defaults 7.0
     when 6
-      config.load_defaults 6.0
-    when 5
-      config.load_defaults 5.1
-      config.active_record.sqlite3.represent_boolean_as_integer = true
+      config.load_defaults 6.1
     end
 
     # Settings in config/environments/* take precedence over those specified here.
