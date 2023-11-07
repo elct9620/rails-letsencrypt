@@ -9,7 +9,6 @@ PATH
       activemodel (>= 6.1)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-      net-smtp
       railties (>= 6.1)
       redis
 
