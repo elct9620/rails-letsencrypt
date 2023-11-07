@@ -3,29 +3,30 @@
 require 'rails_helper'
 
 RSpec.describe LetsEncrypt::Certificate do
+  subject(:cert) { LetsEncrypt::Certificate.new }
+
   let(:intermediaries) { Array.new(3).map { OpenSSL::X509::Certificate.new } }
   let(:key) { OpenSSL::PKey::RSA.new(4096) }
-  let(:ca) { OpenSSL::X509::Certificate.new }
+  let(:mock_cert) { OpenSSL::X509::Certificate.new }
 
   before do
     LetsEncrypt.config.save_to_redis = false
 
-    ca.public_key = key.public_key
-    ca.sign(key, OpenSSL::Digest::SHA256.new)
+    mock_cert.public_key = key.public_key
+    mock_cert.sign(key, OpenSSL::Digest::SHA256.new)
+
   end
 
   describe '#active?' do
-    it 'return true when certificate exists' do
-      subject.certificate = ca
-      expect(subject.active?).to be_truthy
-    end
+    before { cert.certificate = mock_cert }
+
+    it { is_expected.to be_active }
   end
 
   describe '#exipred?' do
-    it 'return true when certificate is not renew' do
-      subject.expires_at = 3.days.ago
-      expect(subject.expired?).to be_truthy
-    end
+    before { cert.expires_at = 3.days.ago }
+
+    it { is_expected.to be_expired }
   end
 
   describe '#get' do
@@ -37,53 +38,64 @@ RSpec.describe LetsEncrypt::Certificate do
   end
 
   describe '#save_to_redis' do
-    it 'doesnt save certificate if it is blank' do
-      expect(LetsEncrypt::Redis).to_not receive(:save)
+    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com') }
+
+    before do
+      allow(LetsEncrypt::Redis).to receive(:save)
       LetsEncrypt.config.save_to_redis = true
-      subject.domain = 'example.com'
-      subject.save
+
+      cert.save
     end
 
-    it 'saves certificate into redis' do
-      expect(LetsEncrypt::Redis).to receive(:save)
-      LetsEncrypt.config.save_to_redis = true
-      subject.domain = 'example.com'
-      subject.certificate = 'CERTIFICATE'
-      subject.key = 'KEY'
-      subject.save
+    it { expect(LetsEncrypt::Redis).not_to have_received(:save) }
+
+    describe 'when certificate is present' do
+      subject(:cert) do
+        LetsEncrypt::Certificate.new(
+          domain: 'example.com',
+          certificate: mock_cert,
+          key: key
+        )
+      end
+
+      it { expect(LetsEncrypt::Redis).to have_received(:save) }
     end
   end
 
   describe '#delete_from_redis' do
-    it 'doesnt delete certificate if it is blank' do
-      expect(LetsEncrypt::Redis).to_not receive(:delete)
+    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com') }
+
+    before do
+      allow(LetsEncrypt::Redis).to receive(:delete)
       LetsEncrypt.config.save_to_redis = true
-      subject.domain = 'example.com'
-      subject.save
-      subject.destroy
+
+      cert.destroy
     end
 
-    it 'deletes certificate from redis' do
-      expect(LetsEncrypt::Redis).to receive(:save)
-      expect(LetsEncrypt::Redis).to receive(:delete)
-      LetsEncrypt.config.save_to_redis = true
-      subject.domain = 'example.com'
-      subject.certificate = 'CERTIFICATE'
-      subject.key = 'KEY'
-      subject.save
-      subject.destroy
+    it { expect(LetsEncrypt::Redis).not_to have_received(:delete) }
+
+    describe 'when certificate is present' do
+      subject(:cert) do
+        LetsEncrypt::Certificate.new(
+          domain: 'example.com',
+          certificate: mock_cert,
+          key: key
+        )
+      end
+
+      it { expect(LetsEncrypt::Redis).to have_received(:delete) }
     end
   end
 
   describe '#verify' do
+    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com') }
+
     let(:acme_client) { double(::Acme::Client) }
     let(:acme_order) { double }
     let(:acme_authorization) { double }
     let(:acme_challenge) { double }
 
-    before :each do
-      subject.domain = 'example.com'
-
+    before do
       allow(LetsEncrypt).to receive(:client).and_return(acme_client)
       allow(acme_client).to receive(:new_order).and_return(acme_order)
       allow(acme_order).to receive(:reload)
@@ -93,61 +105,61 @@ RSpec.describe LetsEncrypt::Certificate do
       allow(acme_challenge).to receive(:reload)
 
       # rubocop:disable Metrics/LineLength
-      expect(acme_challenge).to receive(:filename).and_return('.well-known/acme-challenge/path').at_least(1).times
-      expect(acme_challenge).to receive(:file_content).and_return('content').at_least(1).times
+      allow(acme_challenge).to receive(:filename).and_return('.well-known/acme-challenge/path').at_least(1).times
+      allow(acme_challenge).to receive(:file_content).and_return('content').at_least(1).times
 
-      expect(acme_challenge).to receive(:request_validation).and_return(true).at_least(1).times
+      allow(acme_challenge).to receive(:request_validation).and_return(true).at_least(1).times
       # rubocop:enable Metrics/LineLength
     end
 
-    it 'ask for Let\'s Encrypt to verify domain' do
-      expect(acme_challenge)
-        .to receive(:status).and_return('valid').at_least(1).times
-      subject.verify
+    describe 'when status is valid' do
+      before { allow(acme_challenge).to receive(:status).and_return('valid') }
+
+      it { is_expected.to have_attributes(verify: true) }
     end
 
-    it 'wait verify status is pending' do
-      expect(acme_challenge).to receive(:status).and_return('pending')
-      expect(acme_challenge)
-        .to receive(:status).and_return('valid').at_least(1).times
-      subject.verify
+
+    describe 'when status is pending to valid' do
+      before do
+        allow(acme_challenge).to receive(:status).and_return('pending')
+        allow(acme_challenge).to receive(:status).and_return('valid')
+      end
+
+      it { is_expected.to have_attributes(verify: true) }
     end
 
-    it 'retry when Acme::Client has error' do
-      expect(acme_challenge)
-        .to receive(:status).and_raise(::Acme::Client::Error::BadNonce)
-      expect(acme_challenge)
-        .to receive(:status).and_return('valid').at_least(1).times
-      subject.verify
+    describe 'when Acme::Client::Error is raised' do
+      before do
+        allow(acme_challenge).to receive(:status).and_raise(::Acme::Client::Error::BadNonce)
+        allow(acme_challenge).to receive(:status).and_return('valid')
+      end
+
+      it { is_expected.to have_attributes(verify: true) }
     end
   end
 
   describe '#issue' do
+    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com', key: key) }
+
     let(:acme_client) { double(::Acme::Client) }
     let(:acme_order) { double }
-    let(:ca) { OpenSSL::X509::Certificate.new }
+    let(:mock_cert) { OpenSSL::X509::Certificate.new }
 
-    before :each do
-      subject.domain = 'example.com'
-      subject.key = OpenSSL::PKey::RSA.new(2048)
-
+    before do
       key = OpenSSL::PKey::RSA.new 2048
-      ca.public_key = key.public_key
-      ca.subject = OpenSSL::X509::Name.parse('CN=example.com/C=EE')
-      ca.not_before = Time.zone.now
-      ca.not_after = 1.month.from_now
-      ca.sign(key, OpenSSL::Digest::SHA256.new)
+      mock_cert.public_key = key.public_key
+      mock_cert.subject = OpenSSL::X509::Name.parse('CN=example.com/C=EE')
+      mock_cert.not_before = Time.zone.now
+      mock_cert.not_after = 1.month.from_now
+      mock_cert.sign(key, OpenSSL::Digest::SHA256.new)
 
       allow(LetsEncrypt).to receive(:client).and_return(acme_client)
       allow(acme_client).to receive(:new_order).and_return(acme_order)
       allow(acme_order).to receive(:finalize)
-      allow(acme_order).to receive(:certificate).and_return(ca.to_pem)
+      allow(acme_order).to receive(:certificate).and_return(mock_cert.to_pem)
       allow(acme_order).to receive(:status).and_return('success')
     end
 
-    it 'create new signed certificate' do
-      expect(acme_order).to receive(:certificate).and_return(ca.to_pem)
-      subject.issue
-    end
+    it { is_expected.to have_attributes(issue: true) }
   end
 end
