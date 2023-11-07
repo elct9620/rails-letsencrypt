@@ -52,16 +52,16 @@ module LetsEncrypt
       true
     end
 
-    def retry_on_verify_error(e)
+    def retry_on_verify_error(error)
       @retries ||= 0
-      if e.is_a?(Acme::Client::Error::BadNonce) && @retries < 5
+      if error.is_a?(Acme::Client::Error::BadNonce) && @retries < 5
         @retries += 1
         logger.info "#{domain}: Bad nounce encountered. Retrying (#{@retries} of 5 attempts)"
         sleep 1
         verify
       else
         logger.info "#{domain}: Error: #{e.class} (#{e.message})"
-        return false
+        false
       end
     end
   end

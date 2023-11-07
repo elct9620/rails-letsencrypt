@@ -32,14 +32,15 @@ module LetsEncrypt
     end
 
     def load_private_key
-      return ENV['LETSENCRYPT_PRIVATE_KEY'] if config.use_env_key
+      return ENV.fetch('LETSENCRYPT_PRIVATE_KEY', nil) if config.use_env_key
       return File.open(private_key_path) if File.exist?(private_key_path)
+
       generate_private_key
     end
 
     # Get current using Let's Encrypt endpoint
     def directory
-      @endpoint ||= config.use_staging? ? ENDPOINT_STAGING : ENDPOINT
+      @directory ||= config.use_staging? ? ENDPOINT_STAGING : ENDPOINT
     end
 
     # Register a Let's Encrypt account
@@ -56,12 +57,12 @@ module LetsEncrypt
     end
 
     def private_key_path
-      config.private_key_path || Rails.root.join('config', 'letsencrypt.key')
+      config.private_key_path || Rails.root.join('config/letsencrypt.key')
     end
 
     def generate_private_key
       key = OpenSSL::PKey::RSA.new(4096)
-      File.open(private_key_path, 'w') { |f| f.write(key.to_s) }
+      File.write(private_key_path, key.to_s)
       logger.info "Created new private key for Let's Encrypt"
       key
     end

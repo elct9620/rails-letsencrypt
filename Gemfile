@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 # Declare your gem's dependencies in lets_encrypt.gemspec.
@@ -13,4 +14,9 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+gem 'appraisal'
+gem 'rspec-rails'
+gem 'rubocop', '~> 1.57.2'
+gem 'rubocop-rails'
+gem 'simplecov', '~> 0.16.1'
 gem 'sqlite3'

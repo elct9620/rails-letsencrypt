@@ -4,14 +4,15 @@ require 'rails_helper'
 
 RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
   routes { LetsEncrypt::Engine.routes }
-  class OtherModel < LetsEncrypt::Certificate
+
+  before do
+    stub_const('LetsEncrypt::Certificate', Class.new(LetsEncrypt::Certificate))
   end
 
   it 'returns 404 status when no valid verification path found' do
     get :show, params: { verification_path: :invalid_path }
     expect(response.status).to eq(404)
   end
-
 
   describe 'has certificate' do
     context 'with default model' do

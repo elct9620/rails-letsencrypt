@@ -22,7 +22,7 @@ module LetsEncrypt
   #  index_letsencrypt_certificates_on_domain       (domain)
   #  index_letsencrypt_certificates_on_renew_after  (renew_after)
   #
-  class Certificate < ActiveRecord::Base
+  class Certificate < ApplicationRecord
     include CertificateVerifiable
     include CertificateIssuable
 
@@ -33,8 +33,8 @@ module LetsEncrypt
     scope :expired, -> { where('expires_at <= ?', Time.zone.now) }
 
     before_create -> { self.key = OpenSSL::PKey::RSA.new(4096).to_s }
-    after_save -> { save_to_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
     after_destroy -> { delete_from_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
+    after_save -> { save_to_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
 
     # Returns false if certificate is not issued.
     #

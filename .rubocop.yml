@@ -1,18 +1,23 @@
-inherit_from: .rubocop_todo.yml
+require:
+  - rubocop-rails
+
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.4
-  Include:
-    - Rakefile
-    - lib/**/*.rake
+  TargetRubyVersion: 2.7
+  SuggestExtensions: false
+  NewCops: enable
   Exclude:
-    - Gemfile
-    - Appraisals
-    - rails-letsencrypt.gemspec
-    - lib/generators/lets_encrypt/templates/migration.rb
+    - gemfiles/*
     - spec/dummy/**/*
+    - lib/generators/lets_encrypt/templates/*
+
 Rails:
   Enabled: true
+
+Naming/FileName:
+  Exclude:
+    - lib/rails-letsencrypt.rb
+
 Metrics/BlockLength:
   Exclude:
     - spec/**/*.rb

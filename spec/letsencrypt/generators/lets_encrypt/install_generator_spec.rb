@@ -6,7 +6,7 @@ require 'generators/lets_encrypt/install_generator'
 
 RSpec.describe LetsEncrypt::Generators::InstallGenerator do
   before(:all) do
-    @dummy_class = Class.new(::Rails::Generators::TestCase) do
+    @dummy_class = Class.new(Rails::Generators::TestCase) do
       tests LetsEncrypt::Generators::InstallGenerator
       destination Rails.root.join('tmp')
     end
@@ -17,6 +17,6 @@ RSpec.describe LetsEncrypt::Generators::InstallGenerator do
   end
 
   it do
-    @generator.assert_migration "db/migrate/create_letsencrypt_certificates.rb", /def change/
+    @generator.assert_migration 'db/migrate/create_letsencrypt_certificates.rb', /def change/
   end
 end

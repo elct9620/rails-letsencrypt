@@ -6,7 +6,7 @@ require 'generators/lets_encrypt/register_generator'
 
 RSpec.describe LetsEncrypt::Generators::RegisterGenerator do
   before(:all) do
-    @dummy_class = Class.new(::Rails::Generators::TestCase) do
+    @dummy_class = Class.new(Rails::Generators::TestCase) do
       tests LetsEncrypt::Generators::RegisterGenerator
       destination Rails.root.join('tmp')
     end

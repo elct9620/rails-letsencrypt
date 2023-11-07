@@ -7,7 +7,8 @@ module LetsEncrypt
   class VerificationsController < ApplicationController
     def show
       return render_verification_string if certificate.present?
-      render plain: 'Verification not found', status: 404
+
+      render plain: 'Verification not found', status: :not_found
     end
 
     protected

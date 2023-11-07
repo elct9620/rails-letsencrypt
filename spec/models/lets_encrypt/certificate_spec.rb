@@ -13,8 +13,7 @@ RSpec.describe LetsEncrypt::Certificate do
     LetsEncrypt.config.save_to_redis = false
 
     mock_cert.public_key = key.public_key
-    mock_cert.sign(key, OpenSSL::Digest::SHA256.new)
-
+    mock_cert.sign(key, OpenSSL::Digest.new('SHA256'))
   end
 
   describe '#active?' do
@@ -90,7 +89,7 @@ RSpec.describe LetsEncrypt::Certificate do
   describe '#verify' do
     subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com') }
 
-    let(:acme_client) { double(::Acme::Client) }
+    let(:acme_client) { double(Acme::Client) }
     let(:acme_order) { double }
     let(:acme_authorization) { double }
     let(:acme_challenge) { double }
@@ -104,12 +103,10 @@ RSpec.describe LetsEncrypt::Certificate do
       allow(acme_authorization).to receive(:http).and_return(acme_challenge)
       allow(acme_challenge).to receive(:reload)
 
-      # rubocop:disable Metrics/LineLength
       allow(acme_challenge).to receive(:filename).and_return('.well-known/acme-challenge/path').at_least(1).times
       allow(acme_challenge).to receive(:file_content).and_return('content').at_least(1).times
 
       allow(acme_challenge).to receive(:request_validation).and_return(true).at_least(1).times
-      # rubocop:enable Metrics/LineLength
     end
 
     describe 'when status is valid' do
@@ -117,7 +114,6 @@ RSpec.describe LetsEncrypt::Certificate do
 
       it { is_expected.to have_attributes(verify: true) }
     end
-
 
     describe 'when status is pending to valid' do
       before do
@@ -130,7 +126,7 @@ RSpec.describe LetsEncrypt::Certificate do
 
     describe 'when Acme::Client::Error is raised' do
       before do
-        allow(acme_challenge).to receive(:status).and_raise(::Acme::Client::Error::BadNonce)
+        allow(acme_challenge).to receive(:status).and_raise(Acme::Client::Error::BadNonce)
         allow(acme_challenge).to receive(:status).and_return('valid')
       end
 
@@ -141,7 +137,7 @@ RSpec.describe LetsEncrypt::Certificate do
   describe '#issue' do
     subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com', key: key) }
 
-    let(:acme_client) { double(::Acme::Client) }
+    let(:acme_client) { double(Acme::Client) }
     let(:acme_order) { double }
     let(:mock_cert) { OpenSSL::X509::Certificate.new }
 
@@ -151,7 +147,7 @@ RSpec.describe LetsEncrypt::Certificate do
       mock_cert.subject = OpenSSL::X509::Name.parse('CN=example.com/C=EE')
       mock_cert.not_before = Time.zone.now
       mock_cert.not_after = 1.month.from_now
-      mock_cert.sign(key, OpenSSL::Digest::SHA256.new)
+      mock_cert.sign(key, OpenSSL::Digest.new('SHA256'))
 
       allow(LetsEncrypt).to receive(:client).and_return(acme_client)
       allow(acme_client).to receive(:new_order).and_return(acme_order)

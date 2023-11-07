@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :letsencrypt do
-  desc "Renew certificates that already expired or expiring soon"
+  desc 'Renew certificates that already expired or expiring soon'
   task renew: :environment do
     count = 0
     failed = 0

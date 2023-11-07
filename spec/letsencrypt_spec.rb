@@ -23,7 +23,7 @@ RSpec.describe LetsEncrypt do
   end
 
   describe '#register' do
-    let(:acme_client) { double(::Acme::Client) }
+    let(:acme_client) { double(Acme::Client) }
     let(:acme_account) { double }
 
     it 'register new account to Let\'s Encrypt' do
@@ -39,9 +39,9 @@ RSpec.describe LetsEncrypt do
   end
 
   describe 'certificate_model' do
-    class OtherModel < LetsEncrypt::Certificate
-    end
     before do
+      stub_const('OtherModel', Class.new(LetsEncrypt::Certificate))
+
       LetsEncrypt.config.certificate_model = 'OtherModel'
       allow(LetsEncrypt).to receive(:certificate_model) { LetsEncrypt.config.certificate_model.constantize }
     end

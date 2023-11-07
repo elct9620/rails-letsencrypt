@@ -18,15 +18,16 @@ RSpec.describe LetsEncrypt::Configuration do
   end
 
   describe 'customize certificate model' do
-    class OtherModel < LetsEncrypt::Certificate
-      after_update :success
-
-      def success
-        'success'
-      end
-    end
-
     before(:each) do
+      stub_const('OtherModel', Class.new(LetsEncrypt::Certificate))
+
+      OtherModel.after_update :success
+      OtherModel.class_eval do
+        def success
+          'success'
+        end
+      end
+
       LetsEncrypt.config.certificate_model = 'OtherModel'
       allow(LetsEncrypt).to receive(:certificate_model).and_return(OtherModel)
       LetsEncrypt.certificate_model.create(
