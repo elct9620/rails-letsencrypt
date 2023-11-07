@@ -140,6 +140,16 @@ If you are using Sidekiq or others, you can enqueue renew task daily.
 LetsEncrypt::RenewCertificatesJob.perform_later
 ```
 
+### Subscribe
+
+When the certificate is trying to issue a new one, you can subscribe it for logging or error handling.
+
+```ruby
+ActiveSupport::Notifications.subscribe('letsencrypt.issue') do |name, start, finish, id, payload|
+  Rails.logger.info("Certificate for #{payload[:domain]} is issued")
+end
+```
+
 ### ngx_mruby
 
 The setup is following this [Article](http://hb.matsumoto-r.jp/entry/2017/03/23/173236)

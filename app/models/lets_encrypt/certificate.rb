@@ -51,7 +51,9 @@ module LetsEncrypt
 
     # Returns true if success get a new certificate
     def get
-      verify && issue
+      ActiveSupport::Notifications.instrument('letsencrypt.issue', domain: domain) do
+        verify && issue
+      end
     end
 
     alias renew get
