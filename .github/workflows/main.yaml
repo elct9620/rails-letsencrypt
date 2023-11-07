@@ -7,6 +7,18 @@ on:
   pull_request:
 
 jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true
+    - name: Rubocop
+      run: bundle exec rubocop
+
   rspec:
     runs-on: ubuntu-latest
     strategy:
@@ -29,5 +41,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - name: Run RSpec
+    - name: RSpec
       run: bundle exec rspec
