@@ -19,13 +19,13 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.require_paths = ["lib"]
 
-  s.add_dependency "railties", ">= 5.0"
-  s.add_dependency "actionmailer", ">= 5.0"
-  s.add_dependency "actionpack", ">= 5.0"
-  s.add_dependency "actionview", ">= 5.0"
-  s.add_dependency "activemodel", ">= 5.0"
-  s.add_dependency "activerecord", ">= 5.0"
-  s.add_dependency "activesupport", ">= 5.0"
+  s.add_dependency "railties", ">= 6.1"
+  s.add_dependency "actionmailer", ">= 6.1"
+  s.add_dependency "actionpack", ">= 6.1"
+  s.add_dependency "actionview", ">= 6.1"
+  s.add_dependency "activemodel", ">= 6.1"
+  s.add_dependency "activerecord", ">= 6.1"
+  s.add_dependency "activesupport", ">= 6.1"
   s.add_dependency "acme-client", "~> 2.0.0"
   s.add_dependency "redis"
   s.add_dependency "net-smtp" if RUBY_VERSION >= '3'

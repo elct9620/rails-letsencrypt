@@ -3,14 +3,14 @@ PATH
   specs:
     rails-letsencrypt (0.10.1)
       acme-client (~> 2.0.0)
-      actionmailer (>= 5.0)
-      actionpack (>= 5.0)
-      actionview (>= 5.0)
-      activemodel (>= 5.0)
-      activerecord (>= 5.0)
-      activesupport (>= 5.0)
+      actionmailer (>= 6.1)
+      actionpack (>= 6.1)
+      actionview (>= 6.1)
+      activemodel (>= 6.1)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
       net-smtp
-      railties (>= 5.0)
+      railties (>= 6.1)
       redis
 
 GEM

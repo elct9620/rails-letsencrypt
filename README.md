@@ -4,8 +4,8 @@ Provide manageable Let's Encrypt Certificate for Rails.
 
 ## Requirement
 
-* Rails 5+
-* Ruby 2.5+
+* Rails 6.1+
+* Ruby 2.7+
 
 ## Installation
 
