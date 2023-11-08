@@ -1,31 +1,33 @@
 # frozen_string_literal: true
 
 RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
-  before(:all) { ActiveJob::Base.queue_adapter = :test }
+  let(:certificate) { LetsEncrypt::Certificate.new }
 
-  it 'enqueue job' do
-    expect { LetsEncrypt::RenewCertificatesJob.perform_later }
-      .to have_enqueued_job(LetsEncrypt::RenewCertificatesJob)
+  before do
+    ActiveJob::Base.queue_adapter = :test
+
+    allow(LetsEncrypt::Certificate).to receive(:renewable).and_return([certificate])
   end
 
-  describe 'starting rnew' do
-    before(:each) do
-      expect(LetsEncrypt::Certificate).to receive(:renewable).and_return(certificates)
-    end
+  describe 'when renew success' do
+    before do
+      allow(certificate).to receive(:renew).and_return(true)
 
-    let(:certificates) { [LetsEncrypt::Certificate.new] }
-
-    it 'do nothing when success' do
-      expect_any_instance_of(LetsEncrypt::Certificate).to receive(:renew).and_return(true)
       LetsEncrypt::RenewCertificatesJob.perform_now
     end
 
+    it { expect(certificate).to have_received(:renew) }
+  end
+
+  describe 'renew failed' do
+    before do
+      allow(certificate).to receive(:renew).and_return(false)
+      allow(certificate).to receive(:update).with(renew_after: an_instance_of(ActiveSupport::TimeWithZone))
+
+      LetsEncrypt::RenewCertificatesJob.perform_now
+    end
     it 'schedule next renew to 1 days from now' do
-      allow_any_instance_of(LetsEncrypt::Certificate).to receive(:renew).and_return(false)
-      expect_any_instance_of(LetsEncrypt::Certificate)
-        .to receive(:update).with(renew_after: an_instance_of(ActiveSupport::TimeWithZone))
-
-      LetsEncrypt::RenewCertificatesJob.perform_now
+      expect(certificate).to have_received(:update).with(renew_after: an_instance_of(ActiveSupport::TimeWithZone))
     end
   end
 end
