@@ -5,15 +5,16 @@ require 'rails/generators/test_case'
 require 'generators/lets_encrypt/register_generator'
 
 RSpec.describe LetsEncrypt::Generators::RegisterGenerator do
-  before(:all) do
-    @dummy_class = Class.new(Rails::Generators::TestCase) do
+  let(:klass) do
+    Class.new(Rails::Generators::TestCase) do
       tests LetsEncrypt::Generators::RegisterGenerator
       destination Rails.root.join('tmp')
     end
-    @generator = @dummy_class.new(:fake_test_case)
   end
 
-  it do
+  let(:generator) { klass.new(:fake_test_case) }
+
+  before do
     answers = [
       '', # In production
       '', # File path
@@ -21,10 +22,11 @@ RSpec.describe LetsEncrypt::Generators::RegisterGenerator do
       'example@example.com' # E-Mail
     ]
     allow(Thor::LineEditor).to receive(:readline) { answers.shift.dup || 'N' }
+    allow(LetsEncrypt).to receive(:register).and_return(true)
 
-    expect(LetsEncrypt).to receive(:register).and_return(true)
-
-    @generator.send(:prepare_destination)
-    @generator.run_generator
+    generator.send(:prepare_destination)
+    generator.run_generator
   end
+
+  it { expect(LetsEncrypt).to have_received(:register).with('example@example.com') }
 end
