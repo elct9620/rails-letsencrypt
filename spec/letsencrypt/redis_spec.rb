@@ -6,7 +6,7 @@ RSpec.describe LetsEncrypt::Redis do
   let(:redis) { double(Redis) }
   let(:domain) { 'example.com' }
   let(:certificate) do
-    LetsEncrypt::Certificate.new(domain: domain, key: '', certificate: '')
+    LetsEncrypt::Certificate.new(domain: domain, key: 'KEY', certificate: 'CERTIFICATE')
   end
 
   before(:each) do
@@ -19,28 +19,35 @@ RSpec.describe LetsEncrypt::Redis do
   end
 
   describe '#save' do
-    it 'saves certificate into redis' do
-      certificate.key = 'KEY'
-      certificate.certificate = 'CERTIFICATE'
-      expect(redis).to receive(:set).with("#{domain}.key", an_instance_of(String))
-      expect(redis).to receive(:set).with("#{domain}.crt", an_instance_of(String))
+    before do
+      allow(redis).to receive(:set).with("#{domain}.key", an_instance_of(String))
+      allow(redis).to receive(:set).with("#{domain}.crt", an_instance_of(String))
+
       LetsEncrypt::Redis.save(certificate)
     end
 
-    it 'doesnt save blank certificate into redis' do
-      expect(redis).to_not receive(:set).with("#{domain}.key", an_instance_of(String))
-      expect(redis).to_not receive(:set).with("#{domain}.crt", an_instance_of(String))
-      LetsEncrypt::Redis.save(certificate)
+    it { expect(redis).to have_received(:set).with("#{domain}.key", 'KEY') }
+    it { expect(redis).to have_received(:set).with("#{domain}.crt", 'CERTIFICATE') }
+
+    describe 'when key and certificate is empty' do
+      let(:certificate) do
+        LetsEncrypt::Certificate.new(domain: domain, key: '', certificate: '')
+      end
+
+      it { expect(redis).not_to have_received(:set).with("#{domain}.key", an_instance_of(String)) }
+      it { expect(redis).not_to have_received(:set).with("#{domain}.crt", an_instance_of(String)) }
     end
   end
 
   describe '#delete' do
-    it 'deletes certificate from redis' do
-      certificate.key = 'KEY'
-      certificate.certificate = 'CERTIFICATE'
-      expect(redis).to receive(:del).with("#{domain}.key")
-      expect(redis).to receive(:del).with("#{domain}.crt")
+    before do
+      allow(redis).to receive(:del).with("#{domain}.key")
+      allow(redis).to receive(:del).with("#{domain}.crt")
+
       LetsEncrypt::Redis.delete(certificate)
     end
+
+    it { expect(redis).to have_received(:del).with("#{domain}.key") }
+    it { expect(redis).to have_received(:del).with("#{domain}.crt") }
   end
 end
