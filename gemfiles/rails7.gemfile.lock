@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    rails-letsencrypt (0.10.1)
+    rails-letsencrypt (0.11.0)
       acme-client (~> 2.0.0)
       actionmailer (>= 6.1)
       actionpack (>= 6.1)
