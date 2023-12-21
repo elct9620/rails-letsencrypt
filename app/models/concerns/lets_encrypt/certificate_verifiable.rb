@@ -60,7 +60,7 @@ module LetsEncrypt
         sleep 1
         verify
       else
-        logger.info "#{domain}: Error: #{e.class} (#{e.message})"
+        logger.info "#{domain}: Error: #{error.class} (#{error.message})"
         false
       end
     end
