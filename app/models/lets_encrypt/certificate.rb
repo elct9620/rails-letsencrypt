@@ -26,6 +26,8 @@ module LetsEncrypt
     include CertificateVerifiable
     include CertificateIssuable
 
+    self.table_name = 'letsencrypt_certificates'
+
     validates :domain, presence: true, uniqueness: true
 
     scope :active, -> { where('certificate IS NOT NULL AND expires_at > ?', Time.zone.now) }
