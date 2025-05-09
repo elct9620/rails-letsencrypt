@@ -64,7 +64,7 @@ LetsEncrypt.config do |config|
 
   # Enable it if you want to customize the model
   # Default is LetsEncrypt::Certificate
-  #config.certificate_model = 'MyCertificate'
+  # config.certificate_model = 'MyCertificate'
 end
 ```
 

@@ -32,7 +32,7 @@ module LetsEncrypt
 
     scope :active, -> { where('certificate IS NOT NULL AND expires_at > ?', Time.zone.now) }
     scope :renewable, -> { where('renew_after IS NULL OR renew_after <= ?', Time.zone.now) }
-    scope :expired, -> { where('expires_at <= ?', Time.zone.now) }
+    scope :expired, -> { where(expires_at: ..Time.zone.now) }
 
     before_create -> { self.key = OpenSSL::PKey::RSA.new(4096).to_s }
     after_destroy -> { delete_from_redis }, if: -> { LetsEncrypt.config.use_redis? && active? }
