@@ -26,7 +26,6 @@ module LetsEncrypt
 
     def create_certificate
       order.finalize(csr: csr)
-      sleep 1 while order.status == 'processing'
       fullchain = order.certificate.split("\n\n")
       assign_new_certificate(fullchain)
       save!
