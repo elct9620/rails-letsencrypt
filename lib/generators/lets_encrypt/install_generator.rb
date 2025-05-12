@@ -21,6 +21,10 @@ module LetsEncrypt
                            'db/migrate/create_letsencrypt_certificates.rb'
       end
 
+      def copy_config
+        copy_file 'letsencrypt.rb', 'config/initializers/letsencrypt.rb'
+      end
+
       def required_migration_version?
         Rails::VERSION::MAJOR >= 5
       end
