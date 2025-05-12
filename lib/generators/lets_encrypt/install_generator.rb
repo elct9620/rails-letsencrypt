@@ -22,8 +22,7 @@ module LetsEncrypt
       end
 
       def copy_config
-        copy_file 'letsencrypt.rb',
-                           'config/initializers/letsencrypt.rb'
+        copy_file 'letsencrypt.rb', 'config/initializers/letsencrypt.rb'
       end
 
       def required_migration_version?
