@@ -4,8 +4,8 @@ Provide manageable Let's Encrypt Certificate for Rails.
 
 ## Requirement
 
-* Rails 6.1+
-* Ruby 2.7+
+* Rails 7.2+
+* Ruby 3.2+
 
 ## Installation
 
@@ -199,10 +199,6 @@ server {
   ';
 }
 ```
-
-### Kong
-
-Coming soon.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
