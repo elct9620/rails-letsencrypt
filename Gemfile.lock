@@ -126,6 +126,8 @@ GEM
     nokogiri (1.18.8)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    nokogiri (1.18.8-arm-linux-gnu)
+      racc (~> 1.4)
     nokogiri (1.18.8-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
@@ -222,6 +224,7 @@ GEM
     simplecov-html (0.10.2)
     sqlite3 (2.6.0)
       mini_portile2 (~> 2.8.0)
+    sqlite3 (2.6.0-arm-linux-gnu)
     sqlite3 (2.6.0-x86_64-darwin)
     sqlite3 (2.6.0-x86_64-linux-gnu)
     stringio (3.1.7)
@@ -235,6 +238,7 @@ GEM
     zeitwerk (2.7.2)
 
 PLATFORMS
+  arm-linux
   ruby
   x86_64-darwin-22
   x86_64-linux
