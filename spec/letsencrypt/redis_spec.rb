@@ -6,7 +6,7 @@ RSpec.describe LetsEncrypt::Redis do
   let(:redis) { double(Redis) }
   let(:domain) { 'example.com' }
   let(:certificate) do
-    LetsEncrypt::Certificate.new(domain: domain, key: 'KEY', certificate: 'CERTIFICATE')
+    LetsEncrypt::Certificate.new(domain:, key: 'KEY', certificate: 'CERTIFICATE')
   end
 
   before(:each) do
@@ -31,7 +31,7 @@ RSpec.describe LetsEncrypt::Redis do
 
     describe 'when key and certificate is empty' do
       let(:certificate) do
-        LetsEncrypt::Certificate.new(domain: domain, key: '', certificate: '')
+        LetsEncrypt::Certificate.new(domain:, key: '', certificate: '')
       end
 
       it { expect(redis).not_to have_received(:set).with("#{domain}.key", an_instance_of(String)) }

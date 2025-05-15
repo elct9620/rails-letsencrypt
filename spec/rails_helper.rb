@@ -22,7 +22,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-Dir[File.expand_path('../spec/support/**/*.rb', __dir__)].sort.each { |f| require f }
+Dir[File.expand_path('../spec/support/**/*.rb', __dir__)].each { |f| require f }
 
 ActiveRecord::Migrator.migrations_paths = [File.expand_path('../spec/dummy/db/migrate', __dir__)]
 # Checks for pending migrations before tests are run.

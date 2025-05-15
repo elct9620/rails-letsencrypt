@@ -53,7 +53,7 @@ RSpec.describe LetsEncrypt::Certificate do
         LetsEncrypt::Certificate.new(
           domain: 'example.com',
           certificate: mock_cert,
-          key: key
+          key:
         )
       end
 
@@ -78,7 +78,7 @@ RSpec.describe LetsEncrypt::Certificate do
         LetsEncrypt::Certificate.new(
           domain: 'example.com',
           certificate: mock_cert,
-          key: key
+          key:
         )
       end
 
@@ -135,7 +135,7 @@ RSpec.describe LetsEncrypt::Certificate do
   end
 
   describe '#issue' do
-    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com', key: key) }
+    subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com', key:) }
 
     let(:acme_client) { double(Acme::Client) }
     let(:acme_order) { double }

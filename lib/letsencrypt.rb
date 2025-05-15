@@ -22,8 +22,8 @@ module LetsEncrypt
     # Create the ACME Client to Let's Encrypt
     def client
       @client ||= ::Acme::Client.new(
-        private_key: private_key,
-        directory: directory
+        private_key:,
+        directory:
       )
     end
 
@@ -77,9 +77,9 @@ module LetsEncrypt
     #    # Always use production mode to connect Let's Encrypt API server
     #    config.use_staging = false
     #   end
-    def config(&block)
+    def config(&)
       @config ||= Configuration.new
-      instance_exec(@config, &block) if block_given?
+      instance_exec(@config, &) if block_given?
       @config
     end
 

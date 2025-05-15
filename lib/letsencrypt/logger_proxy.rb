@@ -15,10 +15,10 @@ module LetsEncrypt
       @tags = @tags.uniq
     end
 
-    def tag(logger, &block)
+    def tag(logger, &)
       if logger.respond_to?(:tagged)
         current_tags = tags - logger.formatter.current_tags
-        logger.tagged(*current_tags, &block)
+        logger.tagged(*current_tags, &)
       else
         yield
       end

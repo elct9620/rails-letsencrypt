@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
   routes { LetsEncrypt::Engine.routes }
 
-  subject { get :show, params: { verification_path: verification_path } }
+  subject { get :show, params: { verification_path: } }
   let(:verification_path) { :invalid_path }
 
   before do
