@@ -1,15 +1,5 @@
 # frozen_string_literal: true
 
-appraise 'rails6' do
-  gem 'railties', '~> 6.1'
-  gem 'actionmailer', '~> 6.1'
-  gem 'actionpack', '~> 6.1'
-  gem 'actionview', '~> 6.1'
-  gem 'activemodel', '~> 6.1'
-  gem 'activerecord', '~> 6.1'
-  gem 'activesupport', '~> 6.1'
-end
-
 appraise 'rails7' do
   gem 'railties', '~> 7'
   gem 'actionmailer', '~> 7'
@@ -18,4 +8,14 @@ appraise 'rails7' do
   gem 'activemodel', '~> 7'
   gem 'activerecord', '~> 7'
   gem 'activesupport', '~> 7'
+end
+
+appraise 'rails8' do
+  gem 'railties', '~> 8'
+  gem 'actionmailer', '~> 8'
+  gem 'actionpack', '~> 8'
+  gem 'actionview', '~> 8'
+  gem 'activemodel', '~> 8'
+  gem 'activerecord', '~> 8'
+  gem 'activesupport', '~> 8'
 end
