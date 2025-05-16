@@ -8,6 +8,7 @@ require 'letsencrypt/engine'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
 require 'letsencrypt/redis'
+require 'letsencrypt/verify_service'
 
 # :nodoc:
 module LetsEncrypt

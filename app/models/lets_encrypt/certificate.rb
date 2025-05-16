@@ -23,7 +23,6 @@ module LetsEncrypt
   #  index_letsencrypt_certificates_on_renew_after  (renew_after)
   #
   class Certificate < ApplicationRecord
-    include CertificateVerifiable
     include CertificateIssuable
 
     self.table_name = 'letsencrypt_certificates'
@@ -81,6 +80,18 @@ module LetsEncrypt
     # Delete certificate from redis
     def delete_from_redis
       LetsEncrypt::Redis.delete(self)
+    end
+
+    def verify
+      service = LetsEncrypt::VerifyService.new
+      service.execute(self)
+    end
+
+    def challenge!(filename, file_content)
+      update!(
+        verification_path: filename,
+        verification_string: file_content
+      )
     end
 
     protected
