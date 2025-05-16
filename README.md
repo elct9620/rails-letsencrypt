@@ -1,4 +1,9 @@
-# LetsEncrypt [![Gem Version](https://badge.fury.io/rb/rails-letsencrypt.svg)](https://badge.fury.io/rb/rails-letsencrypt) [![Code Climate](https://codeclimate.com/github/elct9620/rails-letsencrypt/badges/gpa.svg)](https://codeclimate.com/github/elct9620/rails-letsencrypt)
+Rails LetsEncrypt
+===
+
+[![Gem Version](https://badge.fury.io/rb/rails-letsencrypt.svg)](https://badge.fury.io/rb/rails-letsencrypt)
+[![Code Climate](https://codeclimate.com/github/elct9620/rails-letsencrypt/badges/gpa.svg)](https://codeclimate.com/github/elct9620/rails-letsencrypt)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/elct9620/rails-letsencrypt)
 
 Provide manageable Let's Encrypt Certificate for Rails.
 
