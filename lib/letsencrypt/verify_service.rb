@@ -14,8 +14,9 @@ module LetsEncrypt
     end
 
     def execute(certificate)
+      order = acme_client.new_order(identifiers: [certificate.domain])
+
       with_retries do
-        order = acme_client.new_order(identifiers: [certificate.domain])
         challenge = order.authorizations.first.http
 
         certificate.challenge!(challenge.filename, challenge.file_content)
