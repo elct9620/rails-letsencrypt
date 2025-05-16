@@ -5,9 +5,11 @@ require 'acme-client'
 require 'redis'
 require 'letsencrypt/railtie'
 require 'letsencrypt/engine'
+require 'letsencrypt/errors'
 require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
 require 'letsencrypt/redis'
+require 'letsencrypt/challenger'
 require 'letsencrypt/verify_service'
 
 # :nodoc:
