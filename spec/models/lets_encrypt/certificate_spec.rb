@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe LetsEncrypt::Certificate do
-  subject(:cert) { LetsEncrypt::Certificate.new }
+  subject(:cert) { LetsEncrypt::Certificate.new(domain: 'example.com') }
 
   let(:intermediaries) { Array.new(3).map { OpenSSL::X509::Certificate.new } }
   let(:key) { OpenSSL::PKey::RSA.new(4096) }
@@ -29,11 +29,41 @@ RSpec.describe LetsEncrypt::Certificate do
   end
 
   describe '#get' do
-    it 'will ask Lets\'Encrypt for (re)new certificate' do
-      expect_any_instance_of(LetsEncrypt::Certificate).to receive(:verify).and_return(true)
-      expect_any_instance_of(LetsEncrypt::Certificate).to receive(:issue).and_return(true)
-      subject.get
+    subject { cert.get }
+
+    let(:acme_client) { double(Acme::Client) }
+    let(:acme_order) { double }
+    let(:acme_authorization) { double }
+    let(:acme_challenge) { double }
+    let(:mock_cert) { OpenSSL::X509::Certificate.new }
+
+    before do
+      key = OpenSSL::PKey::RSA.new 2048
+      mock_cert.public_key = key.public_key
+      mock_cert.subject = OpenSSL::X509::Name.parse('CN=example.com/C=EE')
+      mock_cert.not_before = Time.zone.now
+      mock_cert.not_after = 1.month.from_now
+      mock_cert.sign(key, OpenSSL::Digest.new('SHA256'))
+
+      allow(LetsEncrypt).to receive(:client).and_return(acme_client)
+      allow(acme_client).to receive(:new_order).and_return(acme_order)
+      allow(acme_order).to receive(:reload)
+      allow(acme_order).to receive(:finalize)
+      allow(acme_order).to receive(:authorizations).and_return([acme_authorization])
+      allow(acme_order).to receive(:status).and_return('success')
+      allow(acme_order).to receive(:certificate).and_return(mock_cert.to_pem)
+      allow(acme_authorization).to receive(:http).and_return(acme_challenge)
+      allow(acme_challenge).to receive(:reload)
+      allow(acme_challenge).to receive(:status).and_return('pending')
+      allow(acme_challenge).to receive(:status).and_return('valid')
+
+      allow(acme_challenge).to receive(:filename).and_return('.well-known/acme-challenge/path').at_least(1).times
+      allow(acme_challenge).to receive(:file_content).and_return('content').at_least(1).times
+
+      allow(acme_challenge).to receive(:request_validation).and_return(true).at_least(1).times
     end
+
+    it { is_expected.to be_truthy }
   end
 
   describe '#save_to_redis' do

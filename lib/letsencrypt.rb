@@ -12,6 +12,7 @@ require 'letsencrypt/redis'
 require 'letsencrypt/challenger'
 require 'letsencrypt/verify_service'
 require 'letsencrypt/issue_service'
+require 'letsencrypt/renew_service'
 
 # :nodoc:
 module LetsEncrypt
