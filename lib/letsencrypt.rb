@@ -11,6 +11,7 @@ require 'letsencrypt/logger_proxy'
 require 'letsencrypt/redis'
 require 'letsencrypt/challenger'
 require 'letsencrypt/verify_service'
+require 'letsencrypt/issue_service'
 
 # :nodoc:
 module LetsEncrypt

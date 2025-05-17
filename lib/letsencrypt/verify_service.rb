@@ -5,10 +5,9 @@ module LetsEncrypt
   class VerifyService
     MAX_RETRYS = 5
 
-    attr_reader :acme_client, :logger, :challenger
+    attr_reader :logger, :challenger
 
-    def initialize(acme_client: LetsEncrypt.client, logger: LetsEncrypt.logger)
-      @acme_client = acme_client
+    def initialize(logger: LetsEncrypt.logger)
       @logger = logger
       @challenger = Challenger.new
     end

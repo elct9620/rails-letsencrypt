@@ -23,8 +23,6 @@ module LetsEncrypt
   #  index_letsencrypt_certificates_on_renew_after  (renew_after)
   #
   class Certificate < ApplicationRecord
-    include CertificateIssuable
-
     self.table_name = 'letsencrypt_certificates'
 
     validates :domain, presence: true, uniqueness: true
@@ -87,10 +85,24 @@ module LetsEncrypt
       service.execute(self, order)
     end
 
+    def issue
+      service = LetsEncrypt::IssueService.new
+      service.execute(self, order)
+    end
+
     def challenge!(filename, file_content)
       update!(
         verification_path: filename,
         verification_string: file_content
+      )
+    end
+
+    def refresh!(cert, fullchain)
+      update!(
+        certificate: cert.to_pem,
+        intermediaries: fullchain.join("\n\n"),
+        expires_at: cert.not_after,
+        renew_after: (cert.not_after - 1.month) + rand(10).days
       )
     end
 
