@@ -84,7 +84,7 @@ module LetsEncrypt
 
     def verify
       service = LetsEncrypt::VerifyService.new
-      service.execute(self)
+      service.execute(self, order)
     end
 
     def challenge!(filename, file_content)
