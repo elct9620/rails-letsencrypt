@@ -6,8 +6,10 @@ module LetsEncrypt
     queue_as :default
 
     def perform
+      service = LetsEncrypt::RenewService.new
+
       LetsEncrypt.certificate_model.renewable.each do |certificate|
-        next if certificate.renew
+        next if service.execute(certificate)
 
         certificate.update(renew_after: 1.day.from_now)
       end
