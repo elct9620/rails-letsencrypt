@@ -48,14 +48,6 @@ module LetsEncrypt
       Time.zone.now >= expires_at
     end
 
-    # Returns true if success get a new certificate
-    def get
-      service = LetsEncrypt::RenewService.new
-      service.execute(self)
-    end
-
-    alias renew get
-
     # Returns full-chain bundled certificates
     def bundle
       (certificate || '') + (intermediaries || '')
@@ -67,26 +59,6 @@ module LetsEncrypt
 
     def key_object
       @key_object ||= OpenSSL::PKey::RSA.new(key)
-    end
-
-    # Save certificate into redis
-    def save_to_redis
-      LetsEncrypt::Redis.save(self)
-    end
-
-    # Delete certificate from redis
-    def delete_from_redis
-      LetsEncrypt::Redis.delete(self)
-    end
-
-    def verify
-      service = LetsEncrypt::VerifyService.new
-      service.execute(self, order)
-    end
-
-    def issue
-      service = LetsEncrypt::IssueService.new
-      service.execute(self, order)
     end
 
     def challenge!(filename, file_content)
@@ -105,11 +77,35 @@ module LetsEncrypt
       )
     end
 
-    protected
-
-    def logger
-      LetsEncrypt.logger
+    # Save certificate into redis
+    def save_to_redis
+      LetsEncrypt::Redis.save(self)
     end
+
+    # Delete certificate from redis
+    def delete_from_redis
+      LetsEncrypt::Redis.delete(self)
+    end
+
+    # Returns true if success get a new certificate
+    def get
+      service = LetsEncrypt::RenewService.new
+      service.execute(self)
+    end
+
+    alias renew get
+
+    def verify
+      service = LetsEncrypt::VerifyService.new
+      service.execute(self, order)
+    end
+
+    def issue
+      service = LetsEncrypt::IssueService.new
+      service.execute(self, order)
+    end
+
+    protected
 
     def order
       @order ||= LetsEncrypt.client.new_order(identifiers: [domain])
