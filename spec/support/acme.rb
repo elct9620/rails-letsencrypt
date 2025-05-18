@@ -136,7 +136,7 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
   def given_acme_order(status: 'valid', domain: 'example.com') # rubocop:disable Metrics/MethodLength
     responses = Array.wrap(status).map do |s|
       {
-        status: 200, body: format(ORDER_BODY, status: s, domain:),
+        status: 200, body: format(ORDER_FINALIZE_BODY, status: s, domain:),
         headers: {
           'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
           'Content-Type' => 'application/json'

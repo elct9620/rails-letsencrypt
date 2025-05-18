@@ -91,8 +91,10 @@ module LetsEncrypt
     def get
       service = LetsEncrypt::RenewService.new
       service.execute(self)
+
+      true
     rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
-      logger.error "#{certificate.domain}: #{e.message}"
+      logger.error "#{domain}: #{e.message}"
       false
     end
 
@@ -101,17 +103,20 @@ module LetsEncrypt
     def verify
       service = LetsEncrypt::VerifyService.new
       service.execute(self, order)
+
+      true
     rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
-      logger.error "#{certificate.domain}: #{e.message}"
+      logger.error "#{domain}: #{e.message}"
       false
     end
 
     def issue
       service = LetsEncrypt::IssueService.new
       service.execute(self, order)
+
       true
     rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
-      logger.error "#{certificate.domain}: #{e.message}"
+      logger.error "#{domain}: #{e.message}"
       false
     end
 

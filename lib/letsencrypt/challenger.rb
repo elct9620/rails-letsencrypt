@@ -8,37 +8,24 @@ module LetsEncrypt
     STATUS_PENDING = 'pending'
     STATUS_VALID = 'valid'
 
-    attr_reader :logger, :max_checks
+    attr_reader :logger, :checker
 
     def initialize(max_checks: MAX_CHECKS)
       @max_checks = max_checks
+      @checker = StatusChecker.new(max_attempts: max_checks)
     end
 
     def execute(challenge)
       challenge.request_validation
 
-      wait(challenge)
+      checker.execute do
+        challenge.reload
+        challenge.status != STATUS_PENDING
+      end
       assert(challenge)
-
-      true
     end
 
     private
-
-    def wait(challenge)
-      checks = 0
-
-      until challenge.status != STATUS_PENDING
-        checks += 1
-        if checks > max_checks
-          raise LetsEncrypt::MaxCheckExceeded,
-                "Status remained at pending for #{max_checks} checks"
-        end
-
-        sleep 1
-        challenge.reload
-      end
-    end
 
     def assert(challenge)
       return if challenge.status == STATUS_VALID
