@@ -21,6 +21,7 @@ module LetsEncrypt
       certificate.refresh!(cert, fullchain)
       logger.info "Certificate issued for #{certificate.domain} " \
                   "(expires on #{certificate.expires_at}, will renew after #{certificate.renew_after})"
+      true
     end
 
     private
