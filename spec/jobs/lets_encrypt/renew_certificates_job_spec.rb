@@ -61,4 +61,16 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
     it { expect { renew }.not_to change(certificate, :expires_at) }
     it { expect { renew }.to change(certificate, :renew_after).from(nil) }
   end
+
+  describe 'when Acme::Client::Error' do
+    let(:service) { spy(LetsEncrypt::RenewService) }
+
+    before do
+      allow(LetsEncrypt::RenewService).to receive(:new).and_return(service)
+      allow(service).to receive(:execute).and_raise(Acme::Client::Error.new('Unexpected error'))
+    end
+
+    it { expect { renew }.not_to change(certificate, :expires_at) }
+    it { expect { renew }.to change(certificate, :renew_after).from(nil) }
+  end
 end
