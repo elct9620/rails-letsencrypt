@@ -70,12 +70,48 @@ LetsEncrypt.config do |config|
   # Enable it if you want to customize the model
   # Default is LetsEncrypt::Certificate
   # config.certificate_model = 'MyCertificate'
+
+  # Configure the maximum attempts to re-check status when verifying or issuing
+  # config.max_attempts = 30
 end
 ```
 
 ## Usage
 
 The SSL certificate setup depends on the web server, this gem can work with `ngx_mruby` or `kong`.
+
+### Service
+
+#### Renew Service
+
+```ruby
+certificate = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+
+service = LetsEncrypt::RenewService.new
+service.execute(certificate)
+```
+
+#### Verify Service
+
+```ruby
+certificate = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+
+order = LetsEncrypt.client.new_order(identifiers: [certificate.domain])
+
+service = LetsEncrypt::VerifyService.new
+service.execute(certificate, order)
+```
+
+#### Issue Service
+
+```ruby
+certificate = LetsEncrypt::Certificate.find_by(domain: 'example.com')
+
+order = LetsEncrypt.client.new_order(identifiers: [certificate.domain])
+
+service = LetsEncrypt::IssueService.new
+service.execute(certificate, order)
+```
 
 ### Certificate Model
 
@@ -88,6 +124,9 @@ cert = LetsEncrypt::Certificate.create(domain: 'example.com')
 cert.get # alias  `verify && issue`
 ```
 
+> [!WARNING] Depcrecation Notice
+> The `get` will be replaced by `RenewService` in the future.
+
 #### Verify
 
 Makes a request to Let's Encrypt and verify domain
@@ -96,6 +135,9 @@ Makes a request to Let's Encrypt and verify domain
 cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.verify
 ```
+
+> [!WARNING] Depcrecation Notice
+> The `verify` will be replaced by `VerifyService` in the future.
 
 #### Issue
 
@@ -106,12 +148,18 @@ cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.issue
 ```
 
+> [!WARNING] Depcrecation Notice
+> The `issue` will be replaced by `IssueService` in the future.
+
 #### Renew
 
 ```ruby
 cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.renew
 ```
+
+> [!WARNING] Depcrecation Notice
+> The `renew` will be replaced by `RenewService` in the future.
 
 #### Status
 
@@ -141,7 +189,7 @@ rake letsencrypt:renew
 
 If you are using Sidekiq or others, you can enqueue renew task daily.
 
-```
+```ruby
 LetsEncrypt::RenewCertificatesJob.perform_later
 ```
 

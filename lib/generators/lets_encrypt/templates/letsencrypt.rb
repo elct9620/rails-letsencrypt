@@ -24,5 +24,8 @@ LetsEncrypt.config do |config|
   # Enable it if you want to customize the model
   # Default is LetsEncrypt::Certificate
   # config.certificate_model = 'MyCertificate'
+
+  # Configure the maximum attempts to re-check status when verifying or issuing
+  # config.max_attempts = 30
 end
 
