@@ -10,7 +10,6 @@ require 'letsencrypt/configuration'
 require 'letsencrypt/logger_proxy'
 require 'letsencrypt/redis'
 require 'letsencrypt/status_checker'
-require 'letsencrypt/challenger'
 require 'letsencrypt/verify_service'
 require 'letsencrypt/issue_service'
 require 'letsencrypt/renew_service'
@@ -29,7 +28,8 @@ module LetsEncrypt
     def client
       @client ||= ::Acme::Client.new(
         private_key:,
-        directory:
+        directory:,
+        bad_nonce_retry: 5
       )
     end
 

@@ -16,19 +16,17 @@ module LetsEncrypt
     end
 
     def execute(certificate, order)
-      with_retries do
-        challenge = order.authorizations.first.http
+      challenge = order.authorizations.first.http
 
-        certificate.challenge!(challenge.filename, challenge.file_content)
+      certificate.challenge!(challenge.filename, challenge.file_content)
 
-        challenge.request_validation
+      challenge.request_validation
 
-        checker.execute do
-          challenge.reload
-          challenge.status != STATUS_PENDING
-        end
-        assert(challenge)
+      checker.execute do
+        challenge.reload
+        challenge.status != STATUS_PENDING
       end
+      assert(challenge)
     end
 
     private

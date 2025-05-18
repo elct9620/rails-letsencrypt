@@ -93,7 +93,7 @@ module LetsEncrypt
       service.execute(self)
 
       true
-    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
+    rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
       logger.error "#{domain}: #{e.message}"
       false
     end
@@ -105,7 +105,7 @@ module LetsEncrypt
       service.execute(self, order)
 
       true
-    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
+    rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
       logger.error "#{domain}: #{e.message}"
       false
     end
@@ -115,7 +115,7 @@ module LetsEncrypt
       service.execute(self, order)
 
       true
-    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
+    rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
       logger.error "#{domain}: #{e.message}"
       false
     end

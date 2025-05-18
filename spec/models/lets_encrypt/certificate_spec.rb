@@ -122,10 +122,6 @@ RSpec.describe LetsEncrypt::Certificate do
 
       it { is_expected.to have_attributes(verify: true) }
     end
-
-    describe 'when Acme::Client::Error is raised' do
-      xit { is_expected.to have_attributes(verify: true) }
-    end
   end
 
   describe '#issue' do

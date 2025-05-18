@@ -10,7 +10,7 @@ module LetsEncrypt
 
       LetsEncrypt.certificate_model.renewable.each do |certificate|
         service.execute(certificate)
-      rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus
+      rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus
         certificate.update(renew_after: 1.day.from_now)
       end
     end
