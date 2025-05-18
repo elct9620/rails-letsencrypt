@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-module AcmeTestHelper
+module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
+  # This module contains helper methods to stub ACME requests
+  # in the tests. It uses WebMock to intercept HTTP requests
+  # and return predefined responses.
+
   DIRECTORY_BODY = <<~JSON
     {
             "keyChange": "https://acme-staging-v02.api.letsencrypt.org/acme/key-change",
