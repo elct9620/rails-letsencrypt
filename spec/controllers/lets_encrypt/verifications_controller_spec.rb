@@ -8,10 +8,6 @@ RSpec.describe LetsEncrypt::VerificationsController, type: :controller do
   subject { get :show, params: { verification_path: } }
   let(:verification_path) { :invalid_path }
 
-  before do
-    stub_const('LetsEncrypt::Certificate', Class.new(LetsEncrypt::Certificate))
-  end
-
   describe 'with invalid path' do
     it { is_expected.to be_not_found }
   end
