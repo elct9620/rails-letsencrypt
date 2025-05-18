@@ -89,8 +89,11 @@ module LetsEncrypt
 
     # Returns true if success get a new certificate
     def get
+      logger.info "Getting certificate for #{domain}"
       service = LetsEncrypt::RenewService.new
       service.execute(self)
+      logger.info "Certificate issued for #{domain} " \
+                  "(expires on #{expires_at}, will renew after #{renew_after})"
 
       true
     rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
@@ -111,8 +114,11 @@ module LetsEncrypt
     end
 
     def issue
+      logger.info "Getting certificate for #{domain}"
       service = LetsEncrypt::IssueService.new
       service.execute(self, order)
+      logger.info "Certificate issued for #{domain} " \
+                  "(expires on #{expires_at}, will renew after #{renew_after})"
 
       true
     rescue LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e

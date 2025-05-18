@@ -3,19 +3,17 @@
 module LetsEncrypt
   # The issue service to download the certificate
   class IssueService
-    attr_reader :logger, :checker
+    attr_reader :checker
 
     MAX_CHECKS = 30
     STATUS_PROCESSING = 'processing'
 
-    def initialize(logger: LetsEncrypt.logger, max_checks: MAX_CHECKS)
-      @logger = logger
+    def initialize(max_checks: MAX_CHECKS)
       @checker = StatusChecker.new(max_attempts: max_checks)
     end
 
-    def execute(certificate, order) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def execute(certificate, order)
       csr = build_csr(certificate)
-      logger.info "Getting certificate for #{certificate.domain}"
       order.finalize(csr:)
       checker.execute do
         order.reload
@@ -24,8 +22,6 @@ module LetsEncrypt
       fullchain = order.certificate.split("\n\n")
       cert = OpenSSL::X509::Certificate.new(fullchain.shift)
       certificate.refresh!(cert, fullchain)
-      logger.info "Certificate issued for #{certificate.domain} " \
-                  "(expires on #{certificate.expires_at}, will renew after #{certificate.renew_after})"
     end
 
     private

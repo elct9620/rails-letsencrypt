@@ -8,10 +8,9 @@ module LetsEncrypt
     STATUS_PENDING = 'pending'
     STATUS_VALID = 'valid'
 
-    attr_reader :logger, :checker
+    attr_reader :checker
 
-    def initialize(logger: LetsEncrypt.logger, max_checks: MAX_CHECKS)
-      @logger = logger
+    def initialize(max_checks: MAX_CHECKS)
       @checker = StatusChecker.new(max_attempts: max_checks)
     end
 
