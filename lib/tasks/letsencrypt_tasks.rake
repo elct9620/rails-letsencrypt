@@ -3,18 +3,21 @@
 namespace :letsencrypt do
   desc 'Renew certificates that already expired or expiring soon'
   task renew: :environment do
-    count = 0
+    success = 0
     failed = 0
 
+    service = LetsEncrypt::RenewService.new
+
     LetsEncrypt.certificate_model.renewable.each do |certificate|
-      count += 1
-
-      next if certificate.renew
-
+      service.execute(certificate)
+      success += 1
+    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
       failed += 1
-      puts "Could not renew domain: #{certificate.domain}"
+      puts "Could not renew domain: #{certificate.domain} - #{e.message}"
     end
 
-    puts "Renewed #{count - failed} out of #{count} domains"
+    puts "Renewed #{success} certificates successfully."
+    puts "Failed to renew #{failed} certificates."
+    puts "Total: #{success + failed} certificates."
   end
 end
