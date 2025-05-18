@@ -75,6 +75,15 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
      }
   JSON
 
+  CHALLENGE_BODY = <<~JSON
+    {
+      "type": "http-01",
+      "status": "%<status>s",
+      "url": "https://acme-staging-v02.api.letsencrypt.org/acme/chall/prV_B7yEyA4",
+      "token": "DGyRejmCefe7v4NfDGDKfA"
+    }
+  JSON
+
   ORDER_FINALIZE_BODY = <<~JSON
     {
       "status": "%<status>s",
@@ -139,15 +148,10 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
                  })
   end
 
-  def given_acme_challenge(status: 'pending') # rubocop:disable Metrics/MethodLength
+  def given_acme_challenge(status: 'pending')
     responses = Array.wrap(status).map do |s|
       {
-        status: 200, body: {
-          type: 'http-01',
-          status: s,
-          url: 'https://acme-staging-v02.api.letsencrypt.org/acme/chall/prV_B7yEyA4',
-          token: 'DGyRejmCefe7v4NfDGDKfA'
-        }.to_json,
+        status: 200, body: format(CHALLENGE_BODY, status: s),
         headers: {
           'Content-Type' => 'application/json'
         }
