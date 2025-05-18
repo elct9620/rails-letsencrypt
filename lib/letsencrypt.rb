@@ -7,7 +7,6 @@ require 'letsencrypt/railtie'
 require 'letsencrypt/engine'
 require 'letsencrypt/errors'
 require 'letsencrypt/configuration'
-require 'letsencrypt/logger_proxy'
 require 'letsencrypt/redis'
 require 'letsencrypt/status_checker'
 require 'letsencrypt/verify_service'
@@ -74,7 +73,7 @@ module LetsEncrypt
     end
 
     def logger
-      @logger ||= LoggerProxy.new(Rails.logger, tags: ['LetsEncrypt'])
+      @logger ||= Rails.logger.tagged('LetsEncrypt')
     end
 
     # Config how to Let's Encrypt works for Rails
