@@ -133,7 +133,7 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
                  })
   end
 
-  def given_acme_order(status: 'pending', domain: 'example.com') # rubocop:disable Metrics/MethodLength
+  def given_acme_order(status: 'valid', domain: 'example.com') # rubocop:disable Metrics/MethodLength
     responses = Array.wrap(status).map do |s|
       {
         status: 200, body: format(ORDER_BODY, status: s, domain:),
@@ -145,6 +145,12 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
     end
 
     stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/new-order')
+      .to_return(status: 200, body: format(ORDER_BODY, status: 'pending', domain:), headers: {
+                   'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
+                   'Content-Type' => 'application/json'
+                 })
+
+    stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo')
       .to_return(*responses)
   end
 
@@ -176,7 +182,7 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
       .to_return(*responses)
   end
 
-  def given_acme_finalize(status: 'valid', domain: 'example.com') # rubocop:disable Metrics/MethodLength
+  def given_acme_finalize(status: 'procesing', domain: 'example.com') # rubocop:disable Metrics/MethodLength
     responses = Array.wrap(status).map do |s|
       {
         status: 200, body: format(ORDER_FINALIZE_BODY, status: s, domain:),

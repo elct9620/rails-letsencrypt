@@ -109,6 +109,10 @@ module LetsEncrypt
     def issue
       service = LetsEncrypt::IssueService.new
       service.execute(self, order)
+      true
+    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
+      logger.error "#{certificate.domain}: #{e.message}"
+      false
     end
 
     protected

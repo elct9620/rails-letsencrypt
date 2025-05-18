@@ -35,7 +35,7 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
     given_acme_nonce
     given_acme_order
     given_acme_authorization
-    given_acme_finalize
+    given_acme_finalize(status: 'ready')
     given_acme_certificate(pem:)
 
     allow(LetsEncrypt::Certificate).to receive(:renewable).and_return([certificate])
