@@ -3,7 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
-  let(:certificate) { LetsEncrypt::Certificate.new(domain: 'example.com') }
+  subject(:renew) { LetsEncrypt::RenewCertificatesJob.perform_now }
+
+  let(:certificate) { LetsEncrypt::Certificate.create!(domain: 'example.com') }
   let(:pem) do
     <<~PEM
       -----BEGIN CERTIFICATE-----
@@ -43,22 +45,22 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
     before do
       given_acme_challenge
       given_acme_challenge(status: 'valid')
-
-      LetsEncrypt::RenewCertificatesJob.perform_now
     end
 
-    it { expect(certificate.expires_at).to(satisfy { |time| time >= Time.zone.parse('2025-06-17T00:00') }) }
+    it {
+      expect { renew }.to change(certificate, :expires_at).to(satisfy do |time|
+                                                                time >= Time.zone.parse('2025-06-17T00:00')
+                                                              end)
+    }
   end
 
   describe 'renew failed' do
     before do
       given_acme_challenge
       given_acme_challenge(status: 'invalid')
-
-      LetsEncrypt::RenewCertificatesJob.perform_now
     end
 
-    it { expect(certificate.expires_at).to be_nil }
-    it { expect(certificate.renew_after).to(satisfy { |time| time > Time.zone.now }) }
+    it { expect { renew }.not_to change(certificate, :expires_at) }
+    it { expect { renew }.to change(certificate, :renew_after).from(nil) }
   end
 end
