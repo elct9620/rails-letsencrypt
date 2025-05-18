@@ -133,19 +133,33 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
                  })
   end
 
-  def given_acme_order(status: 'pending', domain: 'example.com')
+  def given_acme_order(status: 'pending', domain: 'example.com') # rubocop:disable Metrics/MethodLength
+    responses = Array.wrap(status).map do |s|
+      {
+        status: 200, body: format(ORDER_BODY, status: s, domain:),
+        headers: {
+          'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
+          'Content-Type' => 'application/json'
+        }
+      }
+    end
+
     stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/new-order')
-      .to_return(status: 201, body: format(ORDER_BODY, status:, domain:), headers: {
-                   'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
-                   'Content-Type' => 'application/json'
-                 })
+      .to_return(*responses)
   end
 
   def given_acme_authorization(status: 'pending', domain: 'example.com')
+    responses = Array.wrap(status).map do |s|
+      {
+        status: 200, body: format(AUTHZ_BODY, status: s, domain:),
+        headers: {
+          'Content-Type' => 'application/json'
+        }
+      }
+    end
+
     stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/authz/r4HqLzrSrpI')
-      .to_return(status: 200, body: format(AUTHZ_BODY, status:, domain:), headers: {
-                   'Content-Type' => 'application/json'
-                 })
+      .to_return(*responses)
   end
 
   def given_acme_challenge(status: 'pending')
@@ -162,12 +176,19 @@ module AcmeTestHelper # rubocop:disable Metrics/ModuleLength
       .to_return(*responses)
   end
 
-  def given_acme_finalize(status: 'valid', domain: 'example.com')
+  def given_acme_finalize(status: 'valid', domain: 'example.com') # rubocop:disable Metrics/MethodLength
+    responses = Array.wrap(status).map do |s|
+      {
+        status: 200, body: format(ORDER_FINALIZE_BODY, status: s, domain:),
+        headers: {
+          'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
+          'Content-Type' => 'application/json'
+        }
+      }
+    end
+
     stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo/finalize')
-      .to_return(status: 200, body: format(ORDER_FINALIZE_BODY, status:, domain:), headers: {
-                   'Location' => 'https://acme-staging-v02.api.letsencrypt.org/acme/order/TOlocE8rfgo',
-                   'Content-Type' => 'application/json'
-                 })
+      .to_return(*responses)
   end
 
   def given_acme_certificate(pem:)
