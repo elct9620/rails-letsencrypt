@@ -13,10 +13,10 @@ module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     case Rails::VERSION::MAJOR
+    when 8
+      config.load_defaults 8.0
     when 7
-      config.load_defaults 7.0
-    when 6
-      config.load_defaults 6.1
+      config.load_defaults 7.2
     end
 
     # Settings in config/environments/* take precedence over those specified here.
