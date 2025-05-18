@@ -3,15 +3,13 @@
 module LetsEncrypt
   # Process the verification of the domain
   class VerifyService
-    MAX_CHECKS = 30
-
     STATUS_PENDING = 'pending'
     STATUS_VALID = 'valid'
 
     attr_reader :checker
 
-    def initialize(max_checks: MAX_CHECKS)
-      @checker = StatusChecker.new(max_attempts: max_checks)
+    def initialize(config: LetsEncrypt.config)
+      @checker = StatusChecker.new(max_attempts: config.max_attempts)
     end
 
     def execute(certificate, order)

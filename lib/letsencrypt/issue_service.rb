@@ -5,11 +5,10 @@ module LetsEncrypt
   class IssueService
     attr_reader :checker
 
-    MAX_CHECKS = 30
     STATUS_PROCESSING = 'processing'
 
-    def initialize(max_checks: MAX_CHECKS)
-      @checker = StatusChecker.new(max_attempts: max_checks)
+    def initialize(config: LetsEncrypt.config)
+      @checker = StatusChecker.new(max_attempts: config.max_attempts)
     end
 
     def execute(certificate, order)

@@ -20,6 +20,10 @@ module LetsEncrypt
       'LetsEncrypt::Certificate'
     end
 
+    config_accessor :max_attempts do
+      30
+    end
+
     # Returns true if enabled `save_to_redis` feature
     def use_redis?
       save_to_redis == true
