@@ -20,9 +20,6 @@ module LetsEncrypt
 
         challenger.execute(challenge)
       end
-    rescue Acme::Client::Error, LetsEncrypt::MaxCheckExceeded, LetsEncrypt::InvalidStatus => e
-      logger.error "#{certificate.domain}: #{e.message}"
-      false
     end
 
     private

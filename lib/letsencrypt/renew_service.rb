@@ -14,7 +14,7 @@ module LetsEncrypt
         order = acme_client.new_order(identifiers: [certificate.domain])
 
         verify_service = VerifyService.new
-        return false unless verify_service.execute(certificate, order)
+        verify_service.execute(certificate, order)
 
         issue_service = IssueService.new
         issue_service.execute(certificate, order)
