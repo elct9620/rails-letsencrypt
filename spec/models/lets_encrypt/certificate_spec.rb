@@ -116,7 +116,11 @@ RSpec.describe LetsEncrypt::Certificate do
     end
 
     describe 'when status is pending to valid' do
-      xit { is_expected.to have_attributes(verify: true) }
+      before do
+        given_acme_challenge(status: %w[pending valid])
+      end
+
+      it { is_expected.to have_attributes(verify: true) }
     end
 
     describe 'when Acme::Client::Error is raised' do

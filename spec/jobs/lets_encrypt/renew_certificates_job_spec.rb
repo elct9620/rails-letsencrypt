@@ -43,7 +43,6 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
 
   describe 'when renew success' do
     before do
-      given_acme_challenge
       given_acme_challenge(status: 'valid')
     end
 
@@ -56,8 +55,7 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
 
   describe 'renew failed' do
     before do
-      given_acme_challenge
-      given_acme_challenge(status: 'invalid')
+      given_acme_challenge(status: %w[pending invalid])
     end
 
     it { expect { renew }.not_to change(certificate, :expires_at) }

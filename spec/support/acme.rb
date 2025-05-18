@@ -135,11 +135,23 @@ module AcmeTestHelper
                  })
   end
 
-  def given_acme_challenge(status: 'pending')
+  def given_acme_challenge(status: 'pending') # rubocop:disable Metrics/MethodLength
+    responses = Array.wrap(status).map do |s|
+      {
+        status: 200, body: {
+          type: 'http-01',
+          status: s,
+          url: 'https://acme-staging-v02.api.letsencrypt.org/acme/chall/prV_B7yEyA4',
+          token: 'DGyRejmCefe7v4NfDGDKfA'
+        }.to_json,
+        headers: {
+          'Content-Type' => 'application/json'
+        }
+      }
+    end
+
     stub_request(:post, 'https://acme-staging-v02.api.letsencrypt.org/acme/chall/prV_B7yEyA4')
-      .to_return(status: 200, body: { status: }.to_json, headers: {
-                   'Content-Type' => 'application/json'
-                 })
+      .to_return(*responses)
   end
 
   def given_acme_finalize(status: 'valid', domain: 'example.com')
