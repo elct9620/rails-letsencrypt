@@ -13,6 +13,14 @@ module LetsEncrypt
     end
 
     def execute(certificate, order)
+      ActiveSupport::Notifications.instrument('letsencrypt.verify', domain: certificate.domain) do
+        verify(certificate, order)
+      end
+    end
+
+    private
+
+    def verify(certificate, order)
       challenge = order.authorizations.first.http
 
       certificate.challenge!(challenge.filename, challenge.file_content)
@@ -25,8 +33,6 @@ module LetsEncrypt
       end
       assert(challenge)
     end
-
-    private
 
     def assert(challenge)
       return if challenge.status == STATUS_VALID

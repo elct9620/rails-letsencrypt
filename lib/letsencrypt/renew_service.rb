@@ -11,7 +11,7 @@ module LetsEncrypt
     end
 
     def execute(certificate)
-      ActiveSupport::Notifications.instrument('letsencrypt.issue', domain: certificate.domain) do
+      ActiveSupport::Notifications.instrument('letsencrypt.renew', domain: certificate.domain) do
         order = acme_client.new_order(identifiers: [certificate.domain])
 
         verify_service = VerifyService.new(config:)

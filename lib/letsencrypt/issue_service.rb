@@ -12,6 +12,14 @@ module LetsEncrypt
     end
 
     def execute(certificate, order)
+      ActiveSupport::Notifications.instrument('letsencrypt.issue', domain: certificate.domain) do
+        issue(certificate, order)
+      end
+    end
+
+    private
+
+    def issue(certificate, order)
       csr = build_csr(certificate)
       order.finalize(csr:)
       checker.execute do
@@ -22,8 +30,6 @@ module LetsEncrypt
       cert = OpenSSL::X509::Certificate.new(fullchain.shift)
       certificate.refresh!(cert, fullchain)
     end
-
-    private
 
     def build_csr(certificate)
       Acme::Client::CertificateRequest.new(
