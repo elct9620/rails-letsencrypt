@@ -1,7 +1,11 @@
 LetsEncrypt.config do |config|
+  # Configure the ACME server
+  # Default is Let's Encrypt production server
+  # config.acme_server = 'https://acme-v02.api.letsencrypt.org/directory'
+
   # Using Let's Encrypt staging server or not
   # Default only `Rails.env.production? == true` will use Let's Encrypt production server.
-  config.use_staging = true
+  # config.use_staging = true
 
   # Set the private key path
   # Default is locate at config/letsencrypt.key

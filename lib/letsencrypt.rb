@@ -45,7 +45,8 @@ module LetsEncrypt
 
     # Get current using Let's Encrypt endpoint
     def directory
-      @directory ||= config.use_staging? ? ENDPOINT_STAGING : ENDPOINT
+      @directory ||= config.acme_directory ||
+                     (config.use_staging? ? ENDPOINT_STAGING : ENDPOINT)
     end
 
     # Register a Let's Encrypt account

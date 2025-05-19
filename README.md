@@ -45,9 +45,13 @@ Add a file to `config/initializers/letsencrypt.rb` and put below config you need
 
 ```ruby
 LetsEncrypt.config do |config|
+  # Configure the ACME server
+  # Default is Let's Encrypt production server
+  # config.acme_server = 'https://acme-v02.api.letsencrypt.org/directory'
+
   # Using Let's Encrypt staging server or not
   # Default only `Rails.env.production? == true` will use Let's Encrypt production server.
-  config.use_staging = true
+  # config.use_staging = true
 
   # Set the private key path
   # Default is locate at config/letsencrypt.key
@@ -75,6 +79,9 @@ LetsEncrypt.config do |config|
   # config.max_attempts = 30
 end
 ```
+
+> [!WARNING] Depcrecation Notice
+> The `use_staging` will be removed in the future, and the `acme_server` will be used to determine the server.
 
 ## Usage
 

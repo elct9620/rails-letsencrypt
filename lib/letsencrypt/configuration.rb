@@ -5,6 +5,8 @@ module LetsEncrypt
   class Configuration
     include ActiveSupport::Configurable
 
+    config_accessor :acme_directory
+
     config_accessor :use_staging do
       !Rails.env.production?
     end
