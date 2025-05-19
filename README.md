@@ -80,7 +80,8 @@ LetsEncrypt.config do |config|
 end
 ```
 
-> [!WARNING] Depcrecation Notice
+> [!WARNING]
+> **Depcrecation Notice**
 > The `use_staging` will be removed in the future, and the `acme_server` will be used to determine the server.
 
 ## Usage
@@ -131,7 +132,8 @@ cert = LetsEncrypt::Certificate.create(domain: 'example.com')
 cert.get # alias  `verify && issue`
 ```
 
-> [!WARNING] Depcrecation Notice
+> [!WARNING]
+> **Depcrecation Notice**
 > The `get` will be replaced by `RenewService` in the future.
 
 #### Verify
@@ -143,7 +145,8 @@ cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.verify
 ```
 
-> [!WARNING] Depcrecation Notice
+> [!WARNING]
+> **Depcrecation Notice**
 > The `verify` will be replaced by `VerifyService` in the future.
 
 #### Issue
@@ -155,7 +158,8 @@ cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.issue
 ```
 
-> [!WARNING] Depcrecation Notice
+> [!WARNING]
+> **Depcrecation Notice**
 > The `issue` will be replaced by `IssueService` in the future.
 
 #### Renew
@@ -165,7 +169,8 @@ cert = LetsEncrypt::Certificate.find_by(domain: 'example.com')
 cert.renew
 ```
 
-> [!WARNING] Depcrecation Notice
+> [!WARNING]
+> **Depcrecation Notice**
 > The `renew` will be replaced by `RenewService` in the future.
 
 #### Status
