@@ -210,10 +210,16 @@ LetsEncrypt::RenewCertificatesJob.perform_later
 When the certificate is trying to issue a new one, you can subscribe it for logging or error handling.
 
 ```ruby
-ActiveSupport::Notifications.subscribe('letsencrypt.issue') do |name, start, finish, id, payload|
-  Rails.logger.info("Certificate for #{payload[:domain]} is issued")
+ActiveSupport::Notifications.subscribe('letsencrypt.renew') do |name, start, finish, id, payload|
+  Rails.logger.info("Certificate for #{payload[:domain]} is renewed")
 end
 ```
+
+The available events are:
+
+* `letsencrypt.renew`
+* `letsencrypt.verify`
+* `letsencrypt.issue`
 
 ### ngx_mruby
 
