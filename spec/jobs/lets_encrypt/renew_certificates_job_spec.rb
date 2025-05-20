@@ -30,6 +30,10 @@ RSpec.describe LetsEncrypt::RenewCertificatesJob, type: :job do
   before do
     ActiveJob::Base.queue_adapter = :test
 
+    LetsEncrypt.config do |config|
+      config.retry_interval = 0
+    end
+
     given_acme_directory
     given_acme_account
     given_acme_nonce

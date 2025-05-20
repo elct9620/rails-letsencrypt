@@ -28,7 +28,10 @@ RSpec.describe LetsEncrypt::Certificate do
   end
 
   before do
-    LetsEncrypt.config.save_to_redis = false
+    LetsEncrypt.config do |config|
+      config.retry_interval = 0
+      config.save_to_redis = false
+    end
 
     given_acme_directory
     given_acme_account

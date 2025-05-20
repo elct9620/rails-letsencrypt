@@ -28,6 +28,10 @@ RSpec.describe LetsEncrypt::RenewService do
   let(:output) { StringIO.new }
 
   before do
+    LetsEncrypt.config do |config|
+      config.retry_interval = 0
+    end
+
     given_acme_directory
     given_acme_account
     given_acme_nonce
