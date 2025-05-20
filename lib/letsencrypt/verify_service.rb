@@ -9,7 +9,10 @@ module LetsEncrypt
     attr_reader :checker
 
     def initialize(config: LetsEncrypt.config)
-      @checker = StatusChecker.new(max_attempts: config.max_attempts)
+      @checker = StatusChecker.new(
+        max_attempts: config.max_attempts,
+        interval: config.retry_interval
+      )
     end
 
     def execute(certificate, order)

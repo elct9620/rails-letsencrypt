@@ -3,12 +3,9 @@
 module LetsEncrypt
   # The status checker to make a loop until the status is reached
   class StatusChecker
-    DEFAULT_MAX_ATTEMPTS = 30
-    DEFAULT_INTERVAL = 1
-
     attr_reader :max_attempts, :interval
 
-    def initialize(max_attempts: DEFAULT_MAX_ATTEMPTS, interval: DEFAULT_INTERVAL)
+    def initialize(max_attempts:, interval:)
       @max_attempts = max_attempts
       @interval = interval
     end

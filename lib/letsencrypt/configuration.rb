@@ -26,6 +26,10 @@ module LetsEncrypt
       30
     end
 
+    config_accessor :retry_interval do
+      1
+    end
+
     # Returns true if enabled `save_to_redis` feature
     def use_redis?
       save_to_redis == true

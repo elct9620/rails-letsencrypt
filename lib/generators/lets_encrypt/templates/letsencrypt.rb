@@ -31,5 +31,8 @@ LetsEncrypt.config do |config|
 
   # Configure the maximum attempts to re-check status when verifying or issuing
   # config.max_attempts = 30
+
+  # Configure the interval between attempts
+  # config.retry_interval = 1
 end
 
